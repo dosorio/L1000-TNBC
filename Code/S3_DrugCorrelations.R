@@ -2,6 +2,7 @@ library(pbapply)
 library(fgsea)
 library(ggplot2)
 library(ggrepel)
+library(statsExpressions)
 
 expressionProfile <- read.csv('../Data/de_EC_TNBC-H.csv', row.names = 1)
 drugProfiles <- read.csv('../Results/S1_Profiles.csv', row.names = 1)
@@ -41,13 +42,19 @@ df <- data.frame(SC = expressionProfile[iGenes,2], DP = drugProfile[iGenes])
 df <- df[abs(df$SC) > 1,]
 df$G <- rownames(df)
 df$G[!((abs(df$SC) > 0.6) & (abs(df$DP) > 0.6))] <- NA
+
+png('../Figures/F3A.png', width = 1000, height = 1000, res = 300)
 ggplot(df, aes(SC, DP, label = G)) + 
   geom_smooth(method = 'lm', color = 'red', alpha = 0.25) + 
-  geom_point() + 
-  geom_text_repel(min.segment.length = 0, fontface = 3) +
+  geom_point(alpha = 0.5) + 
+  geom_text_repel(min.segment.length = 0, fontface = 3, size = 3.5) +
   theme_bw() +
-  labs(title = 'QL-XII-47') +
-  theme(plot.title = element_text(face = 2))
+  labs(title = 'QL-XII-47', subtitle = corr_test(df, SC,DP, type = 'nonp')$expression[[1]]) +
+  theme(plot.title = element_text(face = 2)) +
+  xlab(expression(log[2]~(Single-Cell~RNA-seq))) +
+  ylab(expression(Effect~Sizes~LINC~L1000~Project)) +
+  theme(plot.subtitle = element_text(size = 6))
+dev.off()
 
 Hallmarks <- gmtPathways('https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName=MSigDB_Hallmark_2020')
 E <- fgseaMultilevel(Hallmarks, drugProfile)
