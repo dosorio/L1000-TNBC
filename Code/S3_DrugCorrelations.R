@@ -216,6 +216,6 @@ GGGGJK
 GGGGLM
 GGGGNO'
 
-png('../Figures/F3.png', width = 4800, height = 4800*0.6, res = 300)
+png('../Figures/F3.png', width = 4800 * 0.9, height = 4800  * 0.9, res = 300)
 F3A + F3B1 + F3B2 + F3B3 + F3B4 + F3B5 + F3C + F3D1 + F3D2 + F3D3 + F3D4 + F3D5 + F3D6 + F3D7 + F3D8 + plot_layout(design = plotLayout)
 dev.off()
