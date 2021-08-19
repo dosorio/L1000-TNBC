@@ -47,8 +47,8 @@ df$C[(df$SC < -fcLimit & df$DP > -fcLimit)] <- 'red'
 df$G[(df$SC < fcLimit & df$DP < fcLimit)] <- NA
 df$C[(df$SC > -fcLimit & df$DP < -fcLimit)] <- 'blue'
 df$C[is.na(df$G)] <- 'black'
-df$alpha <- 0.5
-df$alpha[is.na(df$G)] <- 0.1
+df$alpha <- 1
+df$alpha[is.na(df$G)] <- 0.25
 
 F3A <- ggplot(df, aes(SC, DP, label = G)) + 
   geom_abline(slope = -1, intercept = 0, lty = 2, color = 'red') +
@@ -64,7 +64,11 @@ F3A <- ggplot(df, aes(SC, DP, label = G)) +
 F3A
 
 MSigDB_Hallmarks <- gmtPathways('https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName=MSigDB_Hallmark_2020')
+KEGG <- gmtPathways('https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName=KEGG_2021_Human')
+BIOP <- gmtPathways('https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName=BioPlanet_2019')
+
 set.seed(1)
+#E <- fgseaMultilevel(BIOP, drugProfile, eps = 0)
 E <- fgseaMultilevel(MSigDB_Hallmarks, drugProfile, eps = 0)
 E <- E[E$padj < 0.05,]
 E <- E[order(E$padj),]
@@ -125,8 +129,8 @@ df$C[(df$SC < -fcLimit & df$DP > -fcLimit)] <- 'red'
 df$G[(df$SC < fcLimit & df$DP < fcLimit)] <- NA
 df$C[(df$SC > -fcLimit & df$DP < -fcLimit)] <- 'blue'
 df$C[is.na(df$G)] <- 'black'
-df$alpha <- 0.5
-df$alpha[is.na(df$G)] <- 0.1
+df$alpha <- 1
+df$alpha[is.na(df$G)] <- 0.25
 
 F3C <- ggplot(df, aes(SC, DP, label = G)) + 
   geom_abline(slope = -1, intercept = 0, lty = 2, color = 'red') +
