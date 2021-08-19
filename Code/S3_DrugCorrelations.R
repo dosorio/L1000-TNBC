@@ -41,14 +41,19 @@ df <- data.frame(SC = expressionProfile[iGenes,2], DP = drugProfile[iGenes])
 eLabel <- corr_test(df, SC,DP, type = 'nonp')$expression[[1]]
 df$G <- rownames(df)
 fcLimit <- 0.25
+df$C <- 'black'
 df$G[(df$SC > -fcLimit & df$DP > -fcLimit)] <- NA
+df$C[(df$SC < -fcLimit & df$DP > -fcLimit)] <- 'red'
 df$G[(df$SC < fcLimit & df$DP < fcLimit)] <- NA
+df$C[(df$SC > -fcLimit & df$DP < -fcLimit)] <- 'blue'
+df$C[is.na(df$G)] <- 'black'
 df$alpha <- 0.5
 df$alpha[is.na(df$G)] <- 0.1
 
 F3A <- ggplot(df, aes(SC, DP, label = G)) + 
-  geom_smooth(method = 'lm', color = 'red', alpha = 0.25) + 
-  geom_point(pch = 16, alpha = df$alpha) + 
+  geom_abline(slope = -1, intercept = 0, lty = 2, color = 'red') +
+  geom_point(pch = 16, alpha = df$alpha, color = df$C) + 
+  geom_density_2d() + 
   geom_text_repel(min.segment.length = 0, fontface = 3, size = 4) +
   theme_bw() +
   labs(tag = 'A', title = 'QL-XII-47', subtitle = eLabel) +
@@ -56,6 +61,7 @@ F3A <- ggplot(df, aes(SC, DP, label = G)) +
   xlab(expression(log[2]~(Fold-Change~Single-Cell~RNA-seq))) +
   ylab(expression(Effect~Sizes~LINC~L1000~Project)) +
   theme(plot.subtitle = element_text())
+F3A
 
 MSigDB_Hallmarks <- gmtPathways('https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName=MSigDB_Hallmark_2020')
 set.seed(1)
@@ -67,7 +73,7 @@ eRank <- 1
 F3B1 <- plotEnrichment(MSigDB_Hallmarks[[E$pathway[eRank]]], drugProfile) +
   xlab('Gene Rank') +
   ylab('Enrichment Score') +
-  labs(title = E$pathway[eRank], 
+  labs(tag = 'C', title = E$pathway[eRank], 
        subtitle = parse(text = paste0('NES == ',round(E$NES[eRank],2),'~~P-adj==',formatC(E$padj[eRank],digits = 2, format = 'g')))) +
   theme_bw() +
   theme(plot.title = element_text(face = 2))
@@ -113,21 +119,27 @@ df <- data.frame(SC = expressionProfile[iGenes,2], DP = drugCombination[iGenes])
 eLabel <- corr_test(df, SC,DP, type = 'nonp')$expression[[1]]
 df$G <- rownames(df)
 fcLimit <- 0.25
+df$C <- 'black'
 df$G[(df$SC > -fcLimit & df$DP > -fcLimit)] <- NA
+df$C[(df$SC < -fcLimit & df$DP > -fcLimit)] <- 'red'
 df$G[(df$SC < fcLimit & df$DP < fcLimit)] <- NA
+df$C[(df$SC > -fcLimit & df$DP < -fcLimit)] <- 'blue'
+df$C[is.na(df$G)] <- 'black'
 df$alpha <- 0.5
 df$alpha[is.na(df$G)] <- 0.1
 
 F3C <- ggplot(df, aes(SC, DP, label = G)) + 
-  geom_smooth(method = 'lm', color = 'red', alpha = 0.25) + 
-  geom_point(pch = 16, alpha = df$alpha) + 
+  geom_abline(slope = -1, intercept = 0, lty = 2, color = 'red') +
+  geom_point(pch = 16, alpha = df$alpha, color = df$C) + 
+  geom_density2d() + 
   geom_text_repel(min.segment.length = 0, fontface = 3, size = 4) +
   theme_bw() +
-  labs(tag = 'B', title = 'QL-XII-47 + Nilotinib', subtitle = eLabel) +
+  labs(tag = 'D', title = 'QL-XII-47 + Nilotinib', subtitle = eLabel) +
   theme(plot.title = element_text(face = 2)) +
   xlab(expression(log[2]~(Fold-Change~Single-Cell~RNA-seq))) +
   ylab(expression(Effect~Sizes~LINC~L1000~Combinations)) +
   theme(plot.subtitle = element_text())
+F3C
 
 set.seed(1)
 E <- fgseaMultilevel(MSigDB_Hallmarks, drugCombination)
@@ -138,7 +150,7 @@ eRank <- 1
 F3D1 <- plotEnrichment(MSigDB_Hallmarks[[E$pathway[eRank]]], drugCombination) +
   xlab('Gene Rank') +
   ylab('Enrichment Score') +
-  labs(title = E$pathway[eRank], 
+  labs(tag = 'E', title = E$pathway[eRank], 
        subtitle = parse(text = paste0('NES == ',round(E$NES[eRank],2),'~~P-adj==',formatC(E$padj[eRank],digits = 2, format = 'g')))) +
   theme_bw() +
   theme(plot.title = element_text(face = 2))
@@ -206,16 +218,28 @@ F3D8 <- plotEnrichment(MSigDB_Hallmarks[[E$pathway[eRank]]], drugCombination) +
   theme_bw() +
   theme(plot.title = element_text(face = 2))
 
-plotLayout <- '
-AAAABC
-AAAADE
-AAAAF#
-AAAA##
-GGGGHI
-GGGGJK
-GGGGLM
-GGGGNO'
+EXP <- read.csv('../Data/dataset_20367_20210819011500.csv')
+EXP <- EXP[EXP$Drug.name.Name %in% c('QL-XII-47'),]
+F3A1 <- ggplot(EXP, aes(EXP$GRmax, EXP$Cell.line.Name)) + 
+  geom_boxplot(fill = NA) + 
+  geom_jitter(height = 0) + 
+  theme_bw() + 
+  xlim(c(-1,1)) +
+  xlab(parse(text = 'GR[max]~value' )) + ylab('TNBC Cell Lines') +
+  labs(tag = 'B', title = 'QL-XII-47 Sensitivity in TNBC Cell Lines') +
+  theme(plot.title = element_text(face = 2)) +
+  geom_vline(xintercept = 0, lty = 2, col = 'red')
 
-png('../Figures/F3.png', width = 4800 * 0.9, height = 4800  * 0.9, res = 300)
-F3A + F3B1 + F3B2 + F3B3 + F3B4 + F3B5 + F3C + F3D1 + F3D2 + F3D3 + F3D4 + F3D5 + F3D6 + F3D7 + F3D8 + plot_layout(design = plotLayout)
+plotLayout <- '
+AAPP
+AABC
+AADE
+AAF#
+GGHI
+GGJK
+GGLM
+GGNO'
+
+png('../Figures/F3.png', width = 4800 * 0.85, height = 4800  * 0.8, res = 300)
+F3A + F3B1 + F3B2 + F3B3 + F3B4 + F3B5 + F3C + F3D1 + F3D2 + F3D3 + F3D4 + F3D5 + F3D6 + F3D7 + F3D8 + F3A1 + plot_layout(design = plotLayout)
 dev.off()
