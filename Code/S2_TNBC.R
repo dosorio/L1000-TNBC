@@ -8,6 +8,7 @@ library(Matrix)
 library(limma)
 library(DESeq2)
 library(patchwork)
+library(statsExpressions)
 
 
 ### PCS
@@ -23,13 +24,13 @@ tnbc <- which(grepl('GSM', colnames(pseudoCounts)) & grepl('cells II$', colnames
 h <- which(grepl('sc5r', colnames(pseudoCounts)) & grepl('cells I$', colnames(pseudoCounts)))
 eData <- pseudoCounts[,c(tnbc, h)]
 dData <- data.frame(status = ifelse(grepl('GSM', colnames(eData)), 'C', 'H'))
+dData$status <- factor(dData$status, levels = c('C', 'H'))
 tData <- DESeqDataSetFromMatrix(eData, dData, design = ~ status)
 tData <- DESeq(tData)
 tData <- as.data.frame(results(tData))
 tData <- tData[complete.cases(tData),]
 tData$G <- rownames(tData)
 tData <- tData[order(abs(tData$log2FoldChange), decreasing = TRUE),]
-tData$G[101:nrow(tData)] <- NA
 tData$color <- 'black'
 tData$color[((tData$log2FoldChange > 1) & (tData$padj < 0.05))] <- 'red'
 tData$color[((tData$log2FoldChange < -1) & (tData$padj < 0.05))] <- 'blue'
@@ -42,15 +43,12 @@ DE <- read.csv('~/L1000-TNBC/Data/de_EC_TNBC-H.csv')
 DE$p_val_adj[DE$p_val_adj == 0] <- min(DE$p_val_adj[DE$p_val_adj != 0])
 DE$G <- DE$X
 DE <- DE[order(abs(DE$avg_log2FC), decreasing = TRUE),]
-DE$G[101:nrow(DE)] <- NA
 DE$color <- 'black'
 DE$color[(DE$avg_log2FC > 1) & (DE$p_val_adj < 0.05)] <- 'red'
 DE$color[(DE$avg_log2FC < -1) & (DE$p_val_adj < 0.05)] <- 'blue'
 
 scFC <- DE$avg_log2FC
 names(scFC) <- DE$X
-
-iGenes <- intersect(names(scFC), names(pcFC))
 
 # Bulk
 load('~/BRCA.RData')
@@ -61,64 +59,90 @@ eData <- apply(eData,2,as.integer)
 rownames(eData) <- data@rowRanges$external_gene_name
 colnames(eData) <- data@colData$barcode[selectedSamples]
 eData <- eData[complete.cases(eData),]
-eData <- eData[intersect(rownames(eData), iGenes),]
+eData <- eData[rownames(eData) %in% intersect(names(scFC), names(pcFC)),]
 lData <- data@colData$paper_BRCA_Subtype_PAM50[selectedSamples]
-
-design <- cbind(h_vs_tnbc = lData)
+lData[lData == 'Basal'] <- 'C'
+lData[lData == 'Normal'] <- 'H'
+lData <- factor(lData, levels = c('C', 'H'))
+design <- data.frame(h_vs_tnbc = lData)
 rownames(design) = colnames(eData)
-eData <- DESeqDataSetFromMatrix(round(eData), colData = design, design = ~ h_vs_tnbc)
+
+eData <- DESeqDataSetFromMatrix(eData, colData = design, design = ~ h_vs_tnbc)
 eData <- DESeq(eData)
 
 oFit <- as.data.frame(results(eData))
-oFit$log2FoldChange <- -1 * oFit$log2FoldChange
 oFit <- oFit[complete.cases(oFit),]
+oFit$log2FoldChange <- -1* oFit$log2FoldChange
 oFit$G <- rownames(oFit)
 oFit <- oFit[order(abs(oFit$log2FoldChange), decreasing = TRUE),]
-oFit$G[101:nrow(oFit)] <- NA
 oFit$color <- 'black'
 oFit$color[((oFit$log2FoldChange > 1) & (oFit$padj < 0.05))] <- 'red'
 oFit$color[((oFit$log2FoldChange < -1) & (oFit$padj < 0.05))] <- 'blue'
 
-
 bulkFC <- oFit$log2FoldChange
 names(bulkFC) <- rownames(oFit)
 
+# Label Selection
+g1 <- DE$X[((abs(DE$avg_log2FC) > 1) & (DE$avg_log2FC < 0.05))]
+g2 <- rownames(tData)[((abs(tData$log2FoldChange) > 1) & (tData$padj < 0.05))]
+g3 <- rownames(oFit)[((abs(oFit$log2FoldChange) > 1) & (oFit$padj < 0.05))]
+
+sGenes <- c(g1,g2,g3)
+sGenes <- table(sGenes)
+sGenes <- names(sGenes[sGenes >= 2])
+
 # Plots
 iGenes <- intersect(intersect(names(pcFC),names(scFC)), names(bulkFC))
+
 DE <- DE[DE$X %in% iGenes,]
 tData <- tData[rownames(tData) %in% iGenes,]
 oFit <- oFit[rownames(oFit) %in% iGenes,]
+
 tData$G <- rownames(tData)
-tData$G[101:nrow(tData)] <- NA
+DE$G <- DE$X
+oFit$G <- rownames(oFit)
+
+tData$G[!tData$G %in% sGenes] <- NA
+DE$G[!DE$G %in% sGenes] <- NA
+oFit$G[!oFit$G %in% sGenes] <- NA
+
+DE$G[DE$color == 'black'] <- NA
+tData$G[tData$color == 'black'] <- NA
+oFit$G[oFit$color == 'black'] <- NA
 
 P1A <- ggplot(DE, aes(avg_log2FC, -log10(p_val_adj), label = G)) + 
-  geom_point(pch = 16, alpha = 0.5, color = DE$color) + 
+  geom_point(pch = 16, alpha = ifelse(DE$color == 'black', 0.25,1), color = DE$color) + 
   theme_bw() +
-  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 10) + 
+  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 10, force = 5, segment.color = 'gray60') +
   xlab(log[2]~(Fold-Change~Single-Cell~RNA-seq)) +
   ylab(-log[10]~(P-value)) +
-  labs(tag = 'A', title = 'TNBC - Healthy', subtitle = 'Counts from Single-Cell RNA-seq\n11219 TNBC vs. 11553 Healthy Cells') +
-  theme(plot.title = element_text(face = 2))
+  labs(tag = 'A', title = 'Single-cell RNA-seq', subtitle = '11219 TNBC vs. 11553 Healthy Epithelial Cells') +
+  theme(plot.title = element_text(face = 2), plot.subtitle = element_text(size = 10))
+P1A
 
 P1B <- ggplot(tData, aes(log2FoldChange, -log10(pvalue), label = G)) + 
-  geom_point(pch = 16, alpha = 0.5, color = tData$color) + 
+  geom_point(pch = 16, alpha = ifelse(tData$color == 'black', 0.25,1), color = tData$color) + 
   xlim(-10,10) + 
+  ylim(0, 25) +
   theme_bw() + 
-  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 25) +
+  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 20, force = 5, segment.color = 'gray60') +
   xlab(log[2]~(Fold-Change~PseudoCounts)) +
   ylab(-log[10]~(P-value)) +
-  labs(title = 'TNBC - Healthy', subtitle = 'PseudoCounts from Single-Cell RNA-seq\n9 TNBC vs. 13 Healthy Samples') +
-  theme(plot.title = element_text(face = 2))
+  labs(title = 'Pseudocounts', subtitle = '9 TNBC vs. 13 Healthy Samples') +
+  theme(plot.title = element_text(face = 2), plot.subtitle = element_text(size = 10))
+P1B
 
 P1C <- ggplot(oFit, aes(log2FoldChange, -log10(pvalue), label = G)) + 
-  geom_point(pch = 16, alpha = 0.5, color = oFit$color) + 
-  xlim(-10,10) + 
+  geom_point(pch = 16, alpha = ifelse(oFit$color == 'black', 0.25, 1), color = oFit$color) + 
+  #xlim(-6,6) + 
+  #ylim(0, 40) +
   theme_bw() + 
-  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 20) +
+  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 20, force = 5, segment.color = 'gray60') +
   xlab(log[2]~(Fold-Change~Bulk~RNA-seq)) +
   ylab(-log[10]~(P-value)) +
-  labs(title = 'TNBC - Healthy', subtitle = 'Counts from BRCA-TCGA RNA-seq\n194 TNBC vs. 40 Healthy Samples') +
-  theme(plot.title = element_text(face = 2))
+  labs(title = 'Bulk BRCA-TCGA RNA-seq', subtitle = '194 TNBC vs. 40 Healthy Samples') +
+  theme(plot.title = element_text(face = 2), plot.subtitle = element_text(size = 10))
+P1C
 
 df <- data.frame(sc = scFC[iGenes], pc = pcFC[iGenes], bulk = bulkFC[iGenes])
 df <- df[complete.cases(df),]
@@ -131,45 +155,47 @@ o <- predict(lm(bulk~sc, df), newdata = data.frame(sc=df$sc), interval = 'predic
 df$bulk_sc_lwr <- o[,2]
 df$bulk_sc_upr <- o[,3]
 
-corValue <- round(cor(df$sc, df$pc, method = 'sp'),3)
+corValue <- statsExpressions::corr_test(df,sc, pc, type = 'non')$expression[[1]]
 df$g <- rownames(df)
 df$g[!(((df$pc < -1) & (df$sc < -1)) | ((df$pc > 1) & (df$sc > 1)))] <- NA
 df$color <- 'black'
 df$color[df$sc > 1 & df$pc > 1] <- 'red'
 df$color[df$sc < -1 & df$pc < -1] <- 'blue'
 P1D <- ggplot(df, aes(sc, pc, label = g)) + 
-  geom_point(pch = 16, alpha = 0.5, color = df$color) + 
+  geom_point(pch = 16, alpha = ifelse(df$color == 'black', 0.25,1), color = df$color) +
+  geom_abline(slope = 1, intercept = 0, color = 'red', lty = 2) + 
   geom_density2d() + 
-  geom_smooth(method = 'lm', se = FALSE, col = 'red') +
-  geom_line(aes(sc, pc_sc_lwr), data = df, col = 'red', lty = 2) +
-  geom_line(aes(sc, pc_sc_upr), data = df, col = 'red', lty = 2) +
-  labs(tag = 'B', title = 'PseudoCounts vs. Single-Cell', subtitle = parse(text = paste0('rho == ', corValue))) +
+  #geom_smooth(method = 'lm', se = FALSE, col = 'red') +
+  #geom_line(aes(sc, pc_sc_lwr), data = df, col = 'red', lty = 2) +
+  #geom_line(aes(sc, pc_sc_upr), data = df, col = 'red', lty = 2) +
+  labs(tag = 'B', title = 'PseudoCounts vs. Single-Cell', subtitle = corValue) +
   ylim(-10,10) +
   geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5) + 
   theme_bw() +
   xlab(log[2]~(Fold-Change~Single-Cell~RNA-seq)) +
   ylab(log[2]~(Fold-Change~PseudoCounts)) +
-  theme(plot.title = element_text(face = 2))
+  theme(plot.title = element_text(face = 2), plot.subtitle = element_text(size = 10))
+P1D
 
-corValue <- round(cor(df$sc, df$bulk, method = 'sp'),3)
+corValue <- statsExpressions::corr_test(df,sc, bulk, type = 'non')$expression[[1]]
 df$g <- rownames(df)
 df$g[!(((df$bulk < -1) & (df$sc < -1)) | ((df$bulk > 1) & (df$sc > 1)))] <- NA
 df$color <- 'black'
 df$color[df$sc > 1 & df$bulk > 1] <- 'red'
 df$color[df$sc < -1 & df$bulk < -1] <- 'blue'
 P1E <- ggplot(df, aes(sc, bulk, label = g)) + 
-  geom_point(pch = 16, alpha = 0.5, color = df$color) + 
+  geom_point(pch = 16, alpha = ifelse(df$color == 'black', 0.25,1), color = df$color) + 
+  geom_abline(slope = 1, intercept = 0, color = 'red', lty = 2) + 
   geom_density2d() + 
-  geom_smooth(method = 'lm', se = FALSE, col = 'red') +
-  geom_line(aes(sc, bulk_sc_lwr), data = df, col = 'red', lty = 2) +
-  geom_line(aes(sc, bulk_sc_upr), data = df, col = 'red', lty = 2) +
-  labs(title = 'Bulk vs. Single-Cell', subtitle = parse(text = paste0('rho == ', corValue))) +
+  labs(title = 'Bulk vs. Single-Cell', subtitle = corValue) +
   geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5) + 
   theme_bw() +
   xlab(log[2]~(Fold-Change~Single-Cell~RNA-seq)) +
   ylab(log[2]~(Fold-Change~BRCA-TCGA~RNA-seq)) +
-  theme(plot.title = element_text(face = 2))
+  theme(plot.title = element_text(face = 2), plot.subtitle = element_text(size = 10))
+P1E 
 
-png('../Figures/F2.png', width = 4800, height = 2400, res = 300)
+png('../Figures/F2.png', width = 4800*0.7, height = 4800*0.7, res = 300)
 (P1A | P1B | P1C)/(P1D | P1E)
 dev.off()
+
