@@ -22,6 +22,7 @@ sList <- cbind(l1000_names)
 
 S1 <- unique(data.frame(compound = l1000_compounds, cellLine = l1000_cellLine, concentration = l1000_concentration))
 S1 <- S1[S1$cellLine %in% bCL,]
+# 176 compounds, 4 concentrations, 2 time points in 3 cell TNBC cell lines
 S1 <- apply(S1, 1, function(X){paste0(X, collapse = '_')})
 
 S1Profiles <- pbsapply(S1, function(N){
