@@ -142,7 +142,7 @@ densityPlot <- plot_density(breastData, c('ESR1', 'PGR', 'ERBB2'), joint = TRUE,
 densityPlot <- densityPlot[[4]]
 densityPlot <- densityPlot + 
   theme_bw() +
-  labs(subtitle = expression(italic(n)==8938~Cells)) +
+  #labs(subtitle = expression(italic(n)==8938~Cells)) +
   theme(legend.position = 'none', plot.title = element_text(face = 2))
 
 # MarkersPlot
@@ -223,4 +223,16 @@ png('../Figures/F4.png', width = 4800*.6, height = 4800*.6, res = 300)
 cellTypesPlot + healthyPlot + cancerPlot + densityPlot + dotPlot + 
   plot_layout(design = pLayout)
 dev.off()
-                                 
+
+# A try - 
+breastData <- breastData[,Idents(breastData) %in% 'Epithelial cells']
+breastData <- FindNeighbors(breastData, reduction = 'umap', dims = 1:2)
+breastData <- FindClusters(breastData, resolution = 0.01)
+UMAPPlot(breastData)
+DE <- FindMarkers(breastData, ident.1 = 1)
+
+dP <- read.csv('../Results/S1_Profiles.csv', row.names = 1)
+
+sGenes <- intersect(rownames(dP) , rownames(DE))
+
+sort(cor(data.frame(SC=DE[sGenes,2], dP[sGenes,]), method = 'sp')[,1])[1:10]
