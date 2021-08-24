@@ -193,7 +193,8 @@ dotPlot <- DotPlot(breastData, features = gLabels, dot.min = 0.20, scale = TRUE,
   ylab(NULL) +
   labs(tag = 'C') +
   scale_y_discrete(position = "right") +
-  theme(legend.position="bottom")
+  theme(legend.position="bottom", axis.text.x = element_text(face = "italic"))
+  
 dotPlot
 
 
