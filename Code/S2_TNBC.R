@@ -12,23 +12,23 @@ library(statsExpressions)
 
 
 ### PCS
-load('~/breastCancer/preData.RData')
-iData <- iData[,iData$CellTypes %in% c('Epithelial cells I', 'Epithelial cells II')]
-newIdent <- paste0(iData$orig.ident, '_', iData$CellTypes)
+load('../Data/EpithelialCells.RData')
+breastData <- breastData[,Idents(breastData) %in% c('Cancer_TN', 'Healthy_TP')]
+newIdent <- paste0(breastData$orig.ident, '_', Idents(breastData))
+
 pseudoCounts <- sapply(unique(newIdent), function(X){
-  rowSums(iData@assays$RNA@counts[,newIdent %in% X])
+  rowSums(breastData@assays$RNA@counts[,newIdent %in% X])
 })
 pseudoCounts <- pseudoCounts[rowSums(pseudoCounts) > 0,]
 
-tnbc <- which(grepl('GSM', colnames(pseudoCounts)) & grepl('cells II$', colnames(pseudoCounts)))
-h <- which(grepl('sc5r', colnames(pseudoCounts)) & grepl('cells I$', colnames(pseudoCounts)))
-eData <- pseudoCounts[,c(tnbc, h)]
-dData <- data.frame(status = ifelse(grepl('GSM', colnames(eData)), 'C', 'H'))
+eData <- pseudoCounts
+dData <- data.frame(status = ifelse(grepl('Cancer', colnames(eData)), 'C', 'H'))
 dData$status <- factor(dData$status, levels = c('C', 'H'))
 tData <- DESeqDataSetFromMatrix(eData, dData, design = ~ status)
 tData <- DESeq(tData)
 tData <- as.data.frame(results(tData))
 tData <- tData[complete.cases(tData),]
+tData$log2FoldChange <- -1 * tData$log2FoldChange
 tData$G <- rownames(tData)
 tData <- tData[order(abs(tData$log2FoldChange), decreasing = TRUE),]
 tData$color <- 'black'
@@ -113,10 +113,10 @@ oFit$G[oFit$color == 'black'] <- NA
 P1A <- ggplot(DE, aes(avg_log2FC, -log10(p_val_adj), label = G)) + 
   geom_point(pch = 16, alpha = ifelse(DE$color == 'black', 0.25,1), color = DE$color) + 
   theme_bw() +
-  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 10, force = 5, segment.color = 'gray60') +
+  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 5, force = 5, segment.color = 'gray60') +
   xlab(log[2]~(Fold-Change~Single-Cell~RNA-seq)) +
   ylab(-log[10]~(P-value)) +
-  labs(tag = 'A', title = 'Single-cell RNA-seq', subtitle = '11219 TNBC vs. 11553 Healthy Epithelial Cells') +
+  labs(tag = 'A', title = 'Single-cell RNA-seq', subtitle = '2998 TNBC vs. 6206 Healthy Epithelial Cells') +
   theme(plot.title = element_text(face = 2), plot.subtitle = element_text(size = 10))
 P1A
 
@@ -125,10 +125,10 @@ P1B <- ggplot(tData, aes(log2FoldChange, -log10(pvalue), label = G)) +
   xlim(-10,10) + 
   ylim(0, 25) +
   theme_bw() + 
-  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 20, force = 5, segment.color = 'gray60') +
+  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 10, force = 5, segment.color = 'gray60') +
   xlab(log[2]~(Fold-Change~PseudoCounts)) +
   ylab(-log[10]~(P-value)) +
-  labs(title = 'Pseudocounts', subtitle = '9 TNBC vs. 13 Healthy Samples') +
+  labs(title = 'Pseudocounts', subtitle = '24 TNBC vs. 10 Healthy Samples') +
   theme(plot.title = element_text(face = 2), plot.subtitle = element_text(size = 10))
 P1B
 
@@ -137,7 +137,7 @@ P1C <- ggplot(oFit, aes(log2FoldChange, -log10(pvalue), label = G)) +
   #xlim(-6,6) + 
   #ylim(0, 40) +
   theme_bw() + 
-  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 20, force = 5, segment.color = 'gray60') +
+  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 10, force = 5, segment.color = 'gray60') +
   xlab(log[2]~(Fold-Change~Bulk~RNA-seq)) +
   ylab(-log[10]~(P-value)) +
   labs(title = 'Bulk BRCA-TCGA RNA-seq', subtitle = '194 TNBC vs. 40 Healthy Samples') +
