@@ -228,11 +228,29 @@ dev.off()
 breastData <- breastData[,Idents(breastData) %in% 'Epithelial cells']
 breastData <- FindNeighbors(breastData, reduction = 'umap', dims = 1:2)
 breastData <- FindClusters(breastData, resolution = 0.01)
+Idents(breastData) <- ifelse(Idents(breastData) == 0, yes = 'TP', no = 'TN')
 Idents(breastData) <- paste0(breastData$diseaseStatus, '_', Idents(breastData))
 UMAPPlot(breastData)
-DE <- FindMarkers(breastData, ident.1 = 'Cancer_1', ident.2 = 'Healthy_0', logfc.threshold = 0)
+DE <- FindMarkers(breastData, ident.1 = 'Cancer_TN', ident.2 = 'Healthy_TP', logfc.threshold = 0)
 write.csv(DE, '../Data/de_EC_TNBC-H.csv')
+save(breastData, file = '../Data/EpithelialCells.RData')
+
+# Comparing to healthy negative hormone receptors
+oDE <- FindMarkers(breastData, ident.1 = 'Cancer_TN', ident.2 = 'Healthy_TN', logfc.threshold = 0)
+write.csv(oDE, '../Data/de_EC_TNBC-TNH.csv')
+
+# Comparing H vs C
+Idents(breastData) <- breastData$diseaseStatus
+oDE <- FindMarkers(breastData, ident.1 = 'Cancer', ident.2 = 'Healthy', logfc.threshold = 0)
+write.csv(oDE, '../Data/de_EC_C-H.csv')
+
+# Comparison between experimental designs
+sGenes <- intersect(rownames(DE), rownames(oDE))
+DE <- DE[sGenes,]
+oDE <- oDE[sGenes,]
+plot(DE$avg_log2FC, oDE$avg_log2FC)
+cor(DE$avg_log2FC, oDE$avg_log2FC)
 
 # table(Idents(breastData))
-# Cancer_2  Cancer_1  Cancer_0 Healthy_1 Healthy_0 Healthy_2 
-# 222      2776      2732      5325      6206       792
+# Cancer_TN  Cancer_TP Healthy_TN Healthy_TP 
+# 2998       2732       6117       6206 
