@@ -142,7 +142,7 @@ densityPlot <- plot_density(breastData, c('ESR1', 'PGR', 'ERBB2'), joint = TRUE,
 densityPlot <- densityPlot[[4]]
 densityPlot <- densityPlot + 
   theme_bw() +
-  #labs(subtitle = expression(italic(n)==8938~Cells)) +
+  labs(subtitle = expression(italic(n)==8938~Cells)) +
   theme(legend.position = 'none', plot.title = element_text(face = 2))
 
 # MarkersPlot
@@ -224,15 +224,15 @@ cellTypesPlot + healthyPlot + cancerPlot + densityPlot + dotPlot +
   plot_layout(design = pLayout)
 dev.off()
 
-# A try - 
+# Single cell DE
 breastData <- breastData[,Idents(breastData) %in% 'Epithelial cells']
 breastData <- FindNeighbors(breastData, reduction = 'umap', dims = 1:2)
 breastData <- FindClusters(breastData, resolution = 0.01)
+Idents(breastData) <- paste0(breastData$diseaseStatus, '_', Idents(breastData))
 UMAPPlot(breastData)
-DE <- FindMarkers(breastData, ident.1 = 1)
+DE <- FindMarkers(breastData, ident.1 = 'Cancer_1', ident.2 = 'Healthy_0', logfc.threshold = 0)
+write.csv(DE, '../Data/de_EC_TNBC-H.csv')
 
-dP <- read.csv('../Results/S1_Profiles.csv', row.names = 1)
-
-sGenes <- intersect(rownames(dP) , rownames(DE))
-
-sort(cor(data.frame(SC=DE[sGenes,2], dP[sGenes,]), method = 'sp')[,1])[1:10]
+# table(Idents(breastData))
+# Cancer_2  Cancer_1  Cancer_0 Healthy_1 Healthy_0 Healthy_2 
+# 222      2776      2732      5325      6206       792
