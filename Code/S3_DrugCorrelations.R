@@ -14,22 +14,33 @@ expressionProfile <- expressionProfile[iGenes, ]
 drugProfiles <- drugProfiles[iGenes, ]
 
 drugPotential <- data.frame(TNBC = expressionProfile$avg_log2FC, drugProfiles)
-drugPotential <- sort(cor(drugPotential, method = 'sp')[,1])
+drugPotential <- cor(drugPotential, method = 'sp')[-1,1]
 drugPotential <- data.frame(drugPotential)
+drugPotential$P <- sapply(seq_len(ncol(drugProfiles)), function(X){cor.test(expressionProfile$avg_log2FC, drugProfiles[,X], method = 'sp')$p.value})
+drugPotential$FDR <- p.adjust(drugPotential$P, method = 'fdr')
+drugPotential <- drugPotential[order(drugPotential$drugPotential),]
+
 write.csv(drugPotential, '../Results/S3_drugPotential.csv')
 
 nameCombinations <- t(combn(colnames(drugProfiles),2))
 combinationPotential <- pbapply(nameCombinations,1,function(X){
   cor(expressionProfile$avg_log2FC, rowMeans(drugProfiles[,X]), method = 'sp')
 })
-names(combinationPotential) <- apply(nameCombinations,1,function(X){paste0(X[1],' + ', X[2])})
-combinationPotential <- sort(combinationPotential)
 combinationPotential <- data.frame(combinationPotential)
+
+combinationPotential$P <- pbapply(nameCombinations,1,function(X){
+  cor.test(expressionProfile$avg_log2FC, rowMeans(drugProfiles[,X]), method = 'sp')$p.value
+})
+combinationPotential$FDR <- p.adjust(combinationPotential$P, method = 'fdr')
+rownames(combinationPotential) <- apply(nameCombinations,1,function(X){paste0(X[1],' + ', X[2])})
+combinationPotential <- combinationPotential[order(combinationPotential$combinationPotential),]
+
 write.csv(combinationPotential, '../Results/S3_combinationPotential.csv')
 
 
 # Improved Performance
 (combinationPotential[1,1]/drugPotential[1,1])-1
+# 0.1231749
 
 # Pharmacological effects
 drugProfiles <- read.csv('../Results/S1_Profiles.csv', row.names = 1)
@@ -77,7 +88,7 @@ eRank <- 1
 F3B1 <- plotEnrichment(MSigDB_Hallmarks[[E$pathway[eRank]]], drugProfile) +
   xlab('Gene Rank') +
   ylab('Enrichment Score') +
-  labs(tag = 'C', title = E$pathway[eRank], 
+  labs(tag = 'B', title = E$pathway[eRank], 
        subtitle = parse(text = paste0('NES == ',round(E$NES[eRank],2),'~~P-adj==',formatC(E$padj[eRank],digits = 2, format = 'g')))) +
   theme_bw() +
   theme(plot.title = element_text(face = 2))
@@ -118,7 +129,7 @@ F3B5 <- plotEnrichment(MSigDB_Hallmarks[[E$pathway[eRank]]], drugProfile) +
   theme_bw() +
   theme(plot.title = element_text(face = 2))
 
-drugCombination <- rowMeans(drugProfiles[,c('nilotinib', 'QL.XII.47')])
+drugCombination <- rowMeans(drugProfiles[,c('GSK.690693', 'QL.XII.47')])
 df <- data.frame(SC = expressionProfile[iGenes,2], DP = drugCombination[iGenes])
 eLabel <- corr_test(df, SC,DP, type = 'nonp')$expression[[1]]
 df$G <- rownames(df)
@@ -138,7 +149,7 @@ F3C <- ggplot(df, aes(SC, DP, label = G)) +
   geom_density2d() + 
   geom_text_repel(min.segment.length = 0, fontface = 3, size = 4) +
   theme_bw() +
-  labs(tag = 'D', title = 'QL-XII-47 + Nilotinib', subtitle = eLabel) +
+  labs(tag = 'D', title = 'QL-XII-47 + GSK-690693', subtitle = eLabel) +
   theme(plot.title = element_text(face = 2)) +
   xlab(expression(log[2]~(Fold-Change~Single-Cell~RNA-seq))) +
   ylab(expression(Effect~Sizes~LINC~L1000~Combinations)) +
@@ -204,23 +215,6 @@ F3D6 <- plotEnrichment(MSigDB_Hallmarks[[E$pathway[eRank]]], drugCombination) +
   theme_bw() +
   theme(plot.title = element_text(face = 2))
 
-eRank <- 7
-F3D7 <- plotEnrichment(MSigDB_Hallmarks[[E$pathway[eRank]]], drugCombination) +
-  xlab('Gene Rank') +
-  ylab('Enrichment Score') +
-  labs(title = E$pathway[eRank], 
-       subtitle = parse(text = paste0('NES == ',round(E$NES[eRank],2),'~~P-adj==',formatC(E$padj[eRank],digits = 2, format = 'g')))) +
-  theme_bw() +
-  theme(plot.title = element_text(face = 2))
-
-eRank <- 8
-F3D8 <- plotEnrichment(MSigDB_Hallmarks[[E$pathway[eRank]]], drugCombination) +
-  xlab('Gene Rank') +
-  ylab('Enrichment Score') +
-  labs(title = E$pathway[eRank], 
-       subtitle = parse(text = paste0('NES == ',round(E$NES[eRank],2),'~~P-adj==',formatC(E$padj[eRank],digits = 2, format = 'g')))) +
-  theme_bw() +
-  theme(plot.title = element_text(face = 2))
 
 EXP <- read.csv('../Data/dataset_20367_20210819011500.csv')
 EXP <- EXP[EXP$Drug.name.Name %in% c('QL-XII-47'),]
@@ -230,20 +224,18 @@ F3A1 <- ggplot(EXP, aes(EXP$GRmax, EXP$Cell.line.Name)) +
   theme_bw() + 
   xlim(c(-1,1)) +
   xlab(parse(text = 'GR[max]~value' )) + ylab('TNBC Cell Lines') +
-  labs(tag = 'B', title = 'QL-XII-47 Sensitivity in TNBC Cell Lines') +
+  labs(tag = 'C', title = 'QL-XII-47 Sensitivity', subtitle = 'TNBC Cell Lines') +
   theme(plot.title = element_text(face = 2)) +
   geom_vline(xintercept = 0, lty = 2, col = 'red')
 
 plotLayout <- '
-AAPP
 AABC
 AADE
-AAF#
+AAFN
 GGHI
 GGJK
-GGLM
-GGNO'
+GGLM'
 
 png('../Figures/F3.png', width = 4800 * 0.85, height = 4800  * 0.8, res = 300)
-F3A + F3B1 + F3B2 + F3B3 + F3B4 + F3B5 + F3C + F3D1 + F3D2 + F3D3 + F3D4 + F3D5 + F3D6 + F3D7 + F3D8 + F3A1 + plot_layout(design = plotLayout)
+F3A + F3B1 + F3B2 + F3B3 + F3B4 + F3B5 + F3C + F3D1 + F3D2 + F3D3 + F3D4 + F3D5 + F3D6 + F3A1 + plot_layout(design = plotLayout)
 dev.off()
