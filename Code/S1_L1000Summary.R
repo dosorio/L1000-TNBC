@@ -14,10 +14,10 @@ corMin <- 0.6
 bCL <- c('BT20', 'HS578T', 'MDAMB231')
 
 l1000_names <- colnames(l1000_es)
-l1000_compounds <- unlist(lapply(strsplit(l1000_names, '_'), function(X){X[1]}))
-l1000_cellLine <- unlist(lapply(strsplit(l1000_names, '_'), function(X){X[2]}))
-l1000_concentration <- unlist(lapply(strsplit(l1000_names, '_'), function(X){X[3]}))
-l1000_time <- unlist(lapply(strsplit(l1000_names, '_'), function(X){X[4]}))
+l1000_compounds <- unlist(lapply(strsplit(l1000_names, '_'), function(X){paste0(X[1:(length(X)-3)], collapse = '_')}))
+l1000_cellLine <- unlist(lapply(strsplit(l1000_names, '_'), function(X){X[(length(X)-2)]}))
+l1000_concentration <- unlist(lapply(strsplit(l1000_names, '_'), function(X){X[(length(X)-1)]}))
+l1000_time <- unlist(lapply(strsplit(l1000_names, '_'), function(X){X[length(X)]}))
 sList <- cbind(l1000_names)
 
 S1 <- unique(data.frame(compound = l1000_compounds, cellLine = l1000_cellLine, concentration = l1000_concentration))
@@ -100,12 +100,13 @@ colnames(T1) <- c('X6h', 'X24h', 'Avg')
 T1$G <- rownames(T1)
 T1 <- T1[order(abs(T1$Avg), decreasing = TRUE),]
 T1$G[11:nrow(T1)] <- NA
+
 corValue <- cor(T1$X24h,T1$X6h, method = 'sp')
 A1 <- ggplot(T1, aes(X24h,X6h, label = G)) + 
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0) + 
   labs(tag = 'A', title = parse(text = 'Celastrol - MDAMB231 - 0.08~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab('24 h') +
@@ -116,7 +117,7 @@ A2 <- ggplot(T1, aes(Avg,X6h, label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, size=3, min.segment.length = 0) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(Celastrol~0.08~mu*M~Samples-MDAMB231)')) +
@@ -127,7 +128,7 @@ A3 <- ggplot(T1, aes(Avg,X24h , label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, size=3, min.segment.length = 0) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(Celastrol~0.08~mu*M~Samples-MDAMB231)')) +
@@ -149,7 +150,7 @@ A4 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0) + 
   labs(title = parse(text = 'Celastrol - MDAMB231 - 0.4~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab('24 h') +
@@ -160,7 +161,7 @@ A5 <- ggplot(T1, aes(Avg,X6h, label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, size=3, min.segment.length = 0) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(Celastrol~0.4~mu*M~Samples-MDAMB231)')) +
@@ -171,7 +172,7 @@ A6 <- ggplot(T1, aes(Avg,X24h , label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, size=3, min.segment.length = 0) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(Celastrol~0.4~mu*M~Samples-MDAMB231)')) +
@@ -195,7 +196,7 @@ A7 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0) + 
   labs(title = parse(text = 'Celastrol - MDAMB231 - 2~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab('24 h') +
@@ -206,7 +207,7 @@ A8 <- ggplot(T1, aes(Avg,X6h, label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, size=3, min.segment.length = 0) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(Celastrol~2~mu*M~Samples-MDAMB231)')) +
@@ -217,7 +218,7 @@ A9 <- ggplot(T1, aes(Avg,X24h , label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, size=3, min.segment.length = 0) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(Celastrol~2~mu*M~Samples-MDAMB231)')) +
@@ -239,7 +240,7 @@ A10 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0) + 
   labs(title = parse(text = 'Celastrol - MDAMB231 - 10~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab('24 h') +
@@ -250,7 +251,7 @@ A11 <- ggplot(T1, aes(Avg,X6h, label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, size=3, min.segment.length = 0) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(Celastrol~10~mu*M~Samples-MDAMB231)')) +
@@ -261,7 +262,7 @@ A12 <- ggplot(T1, aes(Avg,X24h , label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, size=3, min.segment.length = 0) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(Celastrol~10~mu*M~Samples-MDAMB231)')) +
@@ -290,7 +291,7 @@ B1 <- ggplot(T2, aes(Avg, X0.08um, label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0) + 
   labs(tag = 'B',subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(Celastrol~Samples-MDAMB231)')) +
@@ -302,7 +303,7 @@ B2 <- ggplot(T2, aes(Avg, X0.4um, label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(Celastrol~Samples-MDAMB231)')) +
@@ -314,7 +315,7 @@ B3 <- ggplot(T2, aes(Avg, X2um, label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(Celastrol~Samples- MDAMB231)')) +
@@ -326,7 +327,7 @@ B4 <- ggplot(T2, aes(Avg, X10um, label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(Celastrol~Samples-MDAMB231)')) +
@@ -353,7 +354,7 @@ C1 <- ggplot(T3, aes(Avg, BT20, label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0) + 
   labs(tag = 'C', title = 'Celastrol - BT20', subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(Celastrol~Samples~Across~Cell~Lines)')) +
@@ -365,7 +366,7 @@ C2 <- ggplot(T3, aes(Avg, HS578T, label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0) + 
   labs(title = 'Celastrol - HS578T', subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(Celastrol~Samples~Across~Cell~Lines)')) +
@@ -377,7 +378,7 @@ C3 <- ggplot(T3, aes(Avg, MDAMB231, label = G)) +
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
-  geom_abline(intercept = 0, slope = 1, lty = 2, col = 'red') +
+  geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0) + 
   labs(title = 'Celastrol - MDAMB231', subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(Celastrol~Samples~Across~Cell~Lines)')) +
