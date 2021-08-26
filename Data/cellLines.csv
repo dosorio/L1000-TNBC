@@ -1,0 +1,61 @@
+Cell Line,Site,Disease,Type
+NOMO1,Blood,Adult acute monocytic leukemia,Local
+PL21,Blood,Adult acute myeloid leukemia,Local
+SKM1,Blood,Adult acute myeloid leukemia,Local
+THP1,Blood,Childhood acute monocytic leukemia,Local
+U937,Blood,Adult acute monocytic leukemia,Metastatic
+WSUDLCL2,Blood,Diffuse large B-cell lymphoma,Metastatic
+JURKAT,Blood,Childhood T acute lymphoblastic leukemia,Local
+U266,Blood,Plasma cell myeloma,Local
+HL60,Blood,Adult acute myeloid leukemia,Local
+A673,Bone,Ewing sarcoma,Local
+SHSY5Y,Brain,Neuroblastoma,Metastatic
+MCF7,Breast,Breast carcinoma,Metastatic
+BT20,Breast,Triple negative breast cancer,Local
+HS578T,Breast,Triple negative breast cancer,Local
+MCF10A,Breast,Non-malignant breast epithelial cells,Local
+MDAMB231,Breast,Triple negative breast cancer,Local
+SKBR3,Breast,Breast adenocarcinoma,Metastatic
+CL34,Colon,Colon adenocarcinoma ,Local
+HCT116,Colon,Colon carcinoma,Local
+HT115,Colon,Colon carcinoma,Local
+HT29,Colon,Colon adenocarcinoma,Local
+LOVO,Colon,Colon adenocarcinoma,Metastatic
+MDST8,Colon,Colon carcinoma,Local
+RKO,Colon,Colon carcinoma,Local
+SNU1040,Colon,Colon adenocarcinoma ,Local
+SNUC4,Colon,Colon adenocarcinoma,Local
+SW480,Colon,Colon adenocarcinoma,Local
+SW620,Colon,Colon adenocarcinoma,Metastatic
+SW948,Colon,Colon adenocarcinoma,Local
+NCIH508,Intestine,Cecum adenocarcinoma,Metastatic
+SNUC5,Intestine,Cecum adenocarcinoma,Local
+HEK293T,Kidney,Non-malignant fetal kidney cells,Local
+HEPG2,Liver,Hepatoblastoma,Local
+HUH7,Liver,Adult hepatocellular carcinoma,Local
+A549,Lung,Lung adenocarcinoma,Local
+CORL23,Lung,Lung large cell carcinoma,Local
+DV90,Lung,Lung adenocarcinoma,Local
+H1299,Lung,Lung large cell carcinoma,Metastatic
+HCC15,Lung,Lung squamous cell carcinoma,Local
+HCC515,Lung,Lung adenocarcinoma,Local
+NCIH1694,Lung,Lung small cell carcinoma,Local
+NCIH1836,Lung,Lung small cell carcinoma,Local
+NCIH2073,Lung,Lung adenocarcinoma,Local
+NCIH596,Lung,Lung adenosquamous carcinoma,Local
+SKLU1,Lung,Lung adenocarcinoma,Local
+T3M10,Lung,Lung large cell carcinoma,Metastatic
+COV644,Ovary,Ovarian mucinous adenocarcinoma,Local
+EFO27,Ovary,Ovarian mucinous adenocarcinoma,Local
+OV7,Ovary,Ovarian carcinoma,Local
+RMUGS,Ovary,Ovarian mucinous cystadenocarcinoma,Local
+TYKNU,Ovary,Ovarian serous adenocarcinoma,Local
+PC3,Prostate,Prostate carcinoma,Metastatic
+VCAP,Prostate,Prostate carcinoma,Local
+A375,Skin,Amelanotic melanoma,Local
+SKMEL1,Skin,Melanoma,Metastatic
+SKMEL28,Skin,Melanoma,Local
+AGS,Stomach,Gastric adenocarcinoma,Local
+HEC108,Uterus,Endometrial adenocarcinoma,Local
+JHUEM2,Uterus,Endometrial adenocarcinoma,Local
+SNGM,Uterus,Endometrial adenocarcinoma,Metastatic
