@@ -113,7 +113,7 @@ oFit$G[oFit$color == 'black'] <- NA
 P1A <- ggplot(DE, aes(avg_log2FC, -log10(p_val_adj), label = G)) + 
   geom_point(pch = 16, alpha = ifelse(DE$color == 'black', 0.25,1), color = DE$color) + 
   theme_bw() +
-  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 5, force = 5, segment.color = 'gray60') +
+  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 5, force = 5, segment.color = 'gray60', bg.color = 'white', bg.r = 0.1) +
   xlab(log[2]~(Fold-Change~Single-Cell~RNA-seq)) +
   ylab(-log[10]~(P-value)) +
   labs(tag = 'A', title = 'Single-cell RNA-seq', subtitle = '2998 TNBC vs. 6206 Healthy Epithelial Cells') +
@@ -125,10 +125,10 @@ P1B <- ggplot(tData, aes(log2FoldChange, -log10(pvalue), label = G)) +
   xlim(-10,10) + 
   ylim(0, 25) +
   theme_bw() + 
-  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 10, force = 5, segment.color = 'gray60') +
+  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 10, force = 5, segment.color = 'gray60', bg.color = 'white', bg.r = 0.1) +
   xlab(log[2]~(Fold-Change~PseudoCounts)) +
   ylab(-log[10]~(P-value)) +
-  labs(title = 'Pseudocounts', subtitle = '24 TNBC vs. 10 Healthy Samples') +
+  labs(title = 'Pseudobulk', subtitle = '24 TNBC vs. 10 Healthy Samples') +
   theme(plot.title = element_text(face = 2), plot.subtitle = element_text(size = 10))
 P1B
 
@@ -137,7 +137,7 @@ P1C <- ggplot(oFit, aes(log2FoldChange, -log10(pvalue), label = G)) +
   #xlim(-6,6) + 
   #ylim(0, 40) +
   theme_bw() + 
-  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 10, force = 5, segment.color = 'gray60') +
+  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, max.overlaps = 10, force = 5, segment.color = 'gray60', bg.color = 'white', bg.r = 0.1) +
   xlab(log[2]~(Fold-Change~Bulk~RNA-seq)) +
   ylab(-log[10]~(P-value)) +
   labs(title = 'Bulk BRCA-TCGA RNA-seq', subtitle = '194 TNBC vs. 40 Healthy Samples') +
@@ -168,9 +168,9 @@ P1D <- ggplot(df, aes(sc, pc, label = g)) +
   #geom_smooth(method = 'lm', se = FALSE, col = 'red') +
   #geom_line(aes(sc, pc_sc_lwr), data = df, col = 'red', lty = 2) +
   #geom_line(aes(sc, pc_sc_upr), data = df, col = 'red', lty = 2) +
-  labs(tag = 'B', title = 'PseudoCounts vs. Single-Cell', subtitle = corValue) +
+  labs(tag = 'B', title = 'Pseudobulk vs. Single-Cell', subtitle = corValue) +
   ylim(-10,10) +
-  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5) + 
+  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, bg.color = 'white', bg.r = 0.1) + 
   theme_bw() +
   xlab(log[2]~(Fold-Change~Single-Cell~RNA-seq)) +
   ylab(log[2]~(Fold-Change~PseudoCounts)) +
@@ -188,7 +188,7 @@ P1E <- ggplot(df, aes(sc, bulk, label = g)) +
   geom_abline(slope = 1, intercept = 0, color = 'red', lty = 2) + 
   geom_density2d() + 
   labs(title = 'Bulk vs. Single-Cell', subtitle = corValue) +
-  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5) + 
+  geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, bg.color = 'white', bg.r = 0.1) + 
   theme_bw() +
   xlab(log[2]~(Fold-Change~Single-Cell~RNA-seq)) +
   ylab(log[2]~(Fold-Change~BRCA-TCGA~RNA-seq)) +

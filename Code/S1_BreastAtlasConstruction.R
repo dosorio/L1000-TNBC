@@ -5,7 +5,9 @@ library(harmony)
 library(Matrix)
 library(patchwork)
 library(Nebulosa)
+library(ggrepel)
 library(circlize)
+library(shadowtext)
 hsaPanglaoDB <- gmtPathways('https://raw.githubusercontent.com/dosorio/utilities/master/singleCell/markerGenes/hsaPanglaoDB.gmt')
 
 
@@ -219,12 +221,12 @@ EEEEEE
 EEEEEE
 '
 
-png('../Figures/F4.png', width = 4800*.6, height = 4800*.6, res = 300)
+png('../Figures/F1.png', width = 4800*.6, height = 4800*.6, res = 300)
 cellTypesPlot + healthyPlot + cancerPlot + densityPlot + dotPlot + 
   plot_layout(design = pLayout)
 dev.off()
 
-# Single cell DE
+# TNBC Single cell Transcriptional Signatures
 breastData <- breastData[,Idents(breastData) %in% 'Epithelial cells']
 breastData <- FindNeighbors(breastData, reduction = 'umap', dims = 1:2)
 breastData <- FindClusters(breastData, resolution = 0.01)
@@ -243,13 +245,6 @@ write.csv(oDE, '../Data/de_EC_TNBC-TNH.csv')
 Idents(breastData) <- breastData$diseaseStatus
 oDE <- FindMarkers(breastData, ident.1 = 'Cancer', ident.2 = 'Healthy', logfc.threshold = 0)
 write.csv(oDE, '../Data/de_EC_C-H.csv')
-
-# Comparison between experimental designs
-sGenes <- intersect(rownames(DE), rownames(oDE))
-DE <- DE[sGenes,]
-oDE <- oDE[sGenes,]
-plot(DE$avg_log2FC, oDE$avg_log2FC)
-cor(DE$avg_log2FC, oDE$avg_log2FC)
 
 # table(Idents(breastData))
 # Cancer_TN  Cancer_TP Healthy_TN Healthy_TP 

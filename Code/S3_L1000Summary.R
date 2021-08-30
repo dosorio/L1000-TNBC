@@ -30,9 +30,10 @@ S1Profiles <- pbsapply(S1, function(N){
   if(ncol(X)>1){
     X <- preprocessCore::normalize.quantiles(as.matrix(X))
   }
-  minCor <- mean(cor(data.frame(rowMeans(X),X),method = 'sp')[,1])
-  if(minCor > corMin){
-    return(rowMeans(X))
+  corValue <- cor(data.frame(rowMeans(X),X),method = 'sp')[,1]
+  corValue <- (corValue[-1] > corMin)
+  if(sum(corValue) > 1){
+    return(rowMeans(X[,corValue]))
   } else {
     return(rep(NA, 1001))
   }
@@ -53,9 +54,10 @@ S2Profiles <- pbsapply(S2, function(N){
   if(ncol(X)>1){
     X <- preprocessCore::normalize.quantiles(as.matrix(X))
   }
-  minCor <- mean(cor(cbind(rowMeans(X),X),method = 'sp')[1,])
-  if(minCor > corMin){
-    return(rowMeans(X))
+  corValue <- cor(data.frame(rowMeans(X),X),method = 'sp')[,1]
+  corValue <- (corValue[-1] > corMin)
+  if(sum(corValue) > 1){
+    return(rowMeans(X[,corValue]))
   } else {
     return(rep(NA, 1001))
   }
@@ -74,9 +76,10 @@ S3Profiles <- pbsapply(S3, function(N){
   if(ncol(X)>1){
     X <- preprocessCore::normalize.quantiles(as.matrix(X))
   }
-  minCor <- mean(cor(cbind(rowMeans(X),X),method = 'sp')[1,])
-  if(minCor > corMin){
-    return(rowMeans(X))
+  corValue <- cor(data.frame(rowMeans(X),X),method = 'sp')[,1]
+  corValue <- (corValue[-1] > corMin)
+  if(sum(corValue) > 1){
+    return(rowMeans(X[,corValue]))
   } else {
     return(rep(NA, 1001))
   }
@@ -89,8 +92,8 @@ rownames(S3Profiles) <- rownames(l1000_es)
 write.csv(S3Profiles, '../Results/S1_Profiles.csv')
 
 
-# Celastrol Example
-T1 <- l1000_es[,colnames(l1000_es)[grepl('celastrol_MDAMB231_0.08um',colnames(l1000_es))]]
+# QL-XII-47 Example
+T1 <- l1000_es[,colnames(l1000_es)[grepl('QL-XII-47_MDAMB231_0.08um',colnames(l1000_es))]]
 dnT1 <- dimnames(T1)
 T1 <- preprocessCore::normalize.quantiles(T1)
 dimnames(T1) <- dnT1
@@ -107,35 +110,37 @@ A1 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0) + 
-  labs(tag = 'A', title = parse(text = 'Celastrol - MDAMB231 - 0.08~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
+  labs(tag = 'A', title = parse(text = 'QL-XII-47 - MDAMB231 - 0.08~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab('24 h') +
   ylab('6 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 'bold'))
+
 corValue <- cor(T1$Avg,T1$X6h, method = 'sp')
 A2 <- ggplot(T1, aes(Avg,X6h, label = G)) + 
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, size=3, min.segment.length = 0) + 
+  geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
-  xlab(parse(text = 'Average~(Celastrol~0.08~mu*M~Samples-MDAMB231)')) +
+  xlab(parse(text = 'Average~(QL-XII-47~0.08~mu*M~Samples-MDAMB231)')) +
   ylab('6 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+
 corValue <- cor(T1$Avg,T1$X24h, method = 'sp')
 A3 <- ggplot(T1, aes(Avg,X24h , label = G)) + 
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, size=3, min.segment.length = 0) + 
+  geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
-  xlab(parse(text = 'Average~(Celastrol~0.08~mu*M~Samples-MDAMB231)')) +
+  xlab(parse(text = 'Average~(QL-XII-47~0.08~mu*M~Samples-MDAMB231)')) +
   ylab('24 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
 
-T1 <- l1000_es[,colnames(l1000_es)[grepl('celastrol_MDAMB231_0.4um',colnames(l1000_es))]]
+T1 <- l1000_es[,colnames(l1000_es)[grepl('QL-XII-47_MDAMB231_0.4um',colnames(l1000_es))]]
 dnT1 <- dimnames(T1)
 T1 <- preprocessCore::normalize.quantiles(T1)
 dimnames(T1) <- dnT1
@@ -151,36 +156,38 @@ A4 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0) + 
-  labs(title = parse(text = 'Celastrol - MDAMB231 - 0.4~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
+  labs(title = parse(text = 'QL-XII-47 - MDAMB231 - 0.4~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab('24 h') +
   ylab('6 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+
 corValue <- cor(T1$Avg,T1$X6h, method = 'sp')
 A5 <- ggplot(T1, aes(Avg,X6h, label = G)) + 
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, size=3, min.segment.length = 0) + 
+  geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
-  xlab(parse(text = 'Average~(Celastrol~0.4~mu*M~Samples-MDAMB231)')) +
+  xlab(parse(text = 'Average~(QL-XII-47~0.4~mu*M~Samples-MDAMB231)')) +
   ylab('6 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+
 corValue <- cor(T1$Avg,T1$X24h, method = 'sp')
 A6 <- ggplot(T1, aes(Avg,X24h , label = G)) + 
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, size=3, min.segment.length = 0) + 
+  geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
-  xlab(parse(text = 'Average~(Celastrol~0.4~mu*M~Samples-MDAMB231)')) +
+  xlab(parse(text = 'Average~(QL-XII-47~0.4~mu*M~Samples-MDAMB231)')) +
   ylab('24 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 
-T1 <- l1000_es[,colnames(l1000_es)[grepl('celastrol_MDAMB231_2um',colnames(l1000_es))]]
+T1 <- l1000_es[,colnames(l1000_es)[grepl('QL-XII-47_MDAMB231_2um',colnames(l1000_es))]]
 dnT1 <- dimnames(T1)
 T1 <- preprocessCore::normalize.quantiles(T1)
 dimnames(T1) <- dnT1
@@ -197,35 +204,37 @@ A7 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0) + 
-  labs(title = parse(text = 'Celastrol - MDAMB231 - 2~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
+  labs(title = parse(text = 'QL-XII-47 - MDAMB231 - 2~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab('24 h') +
   ylab('6 h') + 
   theme(plot.title = element_text(face = 2), panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2))
+
 corValue <- cor(T1$Avg,T1$X6h, method = 'sp')
 A8 <- ggplot(T1, aes(Avg,X6h, label = G)) + 
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, size=3, min.segment.length = 0) + 
+  geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
-  xlab(parse(text = 'Average~(Celastrol~2~mu*M~Samples-MDAMB231)')) +
+  xlab(parse(text = 'Average~(QL-XII-47~2~mu*M~Samples-MDAMB231)')) +
   ylab('6 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+
 corValue <- cor(T1$Avg,T1$X24h, method = 'sp')
 A9 <- ggplot(T1, aes(Avg,X24h , label = G)) + 
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, size=3, min.segment.length = 0) + 
+  geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
-  xlab(parse(text = 'Average~(Celastrol~2~mu*M~Samples-MDAMB231)')) +
+  xlab(parse(text = 'Average~(QL-XII-47~2~mu*M~Samples-MDAMB231)')) +
   ylab('24 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
 
-T1 <- l1000_es[,colnames(l1000_es)[grepl('celastrol_MDAMB231_10um',colnames(l1000_es))]]
+T1 <- l1000_es[,colnames(l1000_es)[grepl('QL-XII-47_MDAMB231_10um',colnames(l1000_es))]]
 dnT1 <- dimnames(T1)
 T1 <- preprocessCore::normalize.quantiles(T1)
 dimnames(T1) <- dnT1
@@ -241,41 +250,43 @@ A10 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0) + 
-  labs(title = parse(text = 'Celastrol - MDAMB231 - 10~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
+  labs(title = parse(text = 'QL-XII-47 - MDAMB231 - 10~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab('24 h') +
   ylab('6 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+
 corValue <- cor(T1$Avg,T1$X6h, method = 'sp')
 A11 <- ggplot(T1, aes(Avg,X6h, label = G)) + 
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, size=3, min.segment.length = 0) + 
+  geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
-  xlab(parse(text = 'Average~(Celastrol~10~mu*M~Samples-MDAMB231)')) +
+  xlab(parse(text = 'Average~(QL-XII-47~10~mu*M~Samples-MDAMB231)')) +
   ylab('6 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+
 corValue <- cor(T1$Avg,T1$X24h, method = 'sp')
 A12 <- ggplot(T1, aes(Avg,X24h , label = G)) + 
   geom_point(alpha = 0.3, pch = 16) + 
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, size=3, min.segment.length = 0) + 
+  geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
-  xlab(parse(text = 'Average~(Celastrol~10~mu*M~Samples-MDAMB231)')) +
+  xlab(parse(text = 'Average~(QL-XII-47~10~mu*M~Samples-MDAMB231)')) +
   ylab('24 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 
-png('../Figures/F1A.png', width = 4800, height = 2500, res = 300)
-(A1|(A2/A3))/(A7|(A8/A9))|(A4|(A5/A6))/(A10|(A11/A12))
-dev.off()
+# png('../Figures/F1A.png', width = 4800, height = 2500, res = 300)
+# (A1|(A2/A3))/(A7|(A8/A9))|(A4|(A5/A6))/(A10|(A11/A12))
+# dev.off()
 
-# Celastrol Example
-T2 <- S1Profiles[,colnames(S1Profiles)[grepl('celastrol_MDA',colnames(S1Profiles))]]
+# QL-XII-47 Example
+T2 <- S1Profiles[,colnames(S1Profiles)[grepl('QL-XII-47_MDA',colnames(S1Profiles))]]
 dnT2 <- dimnames(T2)
 T2 <- preprocessCore::normalize.quantiles(as.matrix(T2))
 dimnames(T2) <- dnT2
@@ -292,10 +303,10 @@ B1 <- ggplot(T2, aes(Avg, X0.08um, label = G)) +
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0) + 
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
   labs(tag = 'B',subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
-  xlab(parse(text = 'Average~(Celastrol~Samples-MDAMB231)')) +
-  ylab(expression(atop('Average',('Celastrol'~0.08~mu*'M'~'Samples-MDAMB231'))))+
+  xlab(parse(text = 'Average~(QL-XII-47~Samples-MDAMB231)')) +
+  ylab(expression(atop('Average',('QL-XII-47'~0.08~mu*'M'~'Samples-MDAMB231'))))+
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 corValue <- cor(T2$Avg, T2$X0.4um, method = 'sp')
@@ -304,10 +315,10 @@ B2 <- ggplot(T2, aes(Avg, X0.4um, label = G)) +
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0) + 
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
-  xlab(parse(text = 'Average~(Celastrol~Samples-MDAMB231)')) +
-  ylab(expression(atop('Average',('Celastrol'~0.4~mu*'M'~'Samples-MDAMB231'))))+
+  xlab(parse(text = 'Average~(QL-XII-47~Samples-MDAMB231)')) +
+  ylab(expression(atop('Average',('QL-XII-47'~0.4~mu*'M'~'Samples-MDAMB231'))))+
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 corValue <- cor(T2$Avg, T2$X2um, method = 'sp')
@@ -316,10 +327,10 @@ B3 <- ggplot(T2, aes(Avg, X2um, label = G)) +
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0) + 
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
-  xlab(parse(text = 'Average~(Celastrol~Samples- MDAMB231)')) +
-  ylab(expression(atop('Average',('Celastrol'~2~mu*'M'~'Samples-MDAMB231'))))+
+  xlab(parse(text = 'Average~(QL-XII-47~Samples- MDAMB231)')) +
+  ylab(expression(atop('Average',('QL-XII-47'~2~mu*'M'~'Samples-MDAMB231'))))+
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 corValue <- cor(T2$Avg, T2$X10um, method = 'sp')
@@ -328,17 +339,17 @@ B4 <- ggplot(T2, aes(Avg, X10um, label = G)) +
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0) + 
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
-  xlab(parse(text = 'Average~(Celastrol~Samples-MDAMB231)')) +
-  ylab(expression(atop('Average',('Celastrol'~10~mu*'M'~'Samples-MDAMB231'))))+
+  xlab(parse(text = 'Average~(QL-XII-47~Samples-MDAMB231)')) +
+  ylab(expression(atop('Average',('QL-XII-47'~10~mu*'M'~'Samples-MDAMB231'))))+
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
 
-png('../Figures/F1B.png', width = 4800, height = 1300, res = 300)
-B1 | B2 | B3 | B4
-dev.off()
+# png('../Figures/F1B.png', width = 4800, height = 1300, res = 300)
+# B1 | B2 | B3 | B4
+# dev.off()
 
-T3 <- S2Profiles[,S2_names[grepl('celas',S2_names)]]
+T3 <- S2Profiles[,S2_names[grepl('QL-XII-47',S2_names)]]
 dnT3 <- dimnames(T3)
 T3 <- preprocessCore::normalize.quantiles(as.matrix(T3))
 T3 <- as.data.frame(T3)
@@ -355,10 +366,10 @@ C1 <- ggplot(T3, aes(Avg, BT20, label = G)) +
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0) + 
-  labs(tag = 'C', title = 'Celastrol - BT20', subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
-  xlab(parse(text = 'Average~(Celastrol~Samples~Across~Cell~Lines)')) +
-  ylab(parse(text = 'Average~(Celastrol - BT20)')) + 
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
+  labs(tag = 'C', title = 'QL-XII-47 - BT20', subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  xlab(parse(text = 'Average~(QL-XII-47~Samples~Across~Cell~Lines)')) +
+  ylab(parse(text = 'Average~(QL-XII-47 - BT20)')) + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 1))
 
 corValue <- cor(T3$HS578T, T3$Avg, method = 'sp')
@@ -367,10 +378,10 @@ C2 <- ggplot(T3, aes(Avg, HS578T, label = G)) +
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0) + 
-  labs(title = 'Celastrol - HS578T', subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
-  xlab(parse(text = 'Average~(Celastrol~Samples~Across~Cell~Lines)')) +
-  ylab(parse(text = 'Average~(Celastrol - HS578T)')) + 
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
+  labs(title = 'QL-XII-47 - HS578T', subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  xlab(parse(text = 'Average~(QL-XII-47~Samples~Across~Cell~Lines)')) +
+  ylab(parse(text = 'Average~(QL-XII-47 - HS578T)')) + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 1))
 
 corValue <- cor(T3$MDAMB231, T3$Avg, method = 'sp')
@@ -379,15 +390,15 @@ C3 <- ggplot(T3, aes(Avg, MDAMB231, label = G)) +
   geom_density2d() + 
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0) + 
-  labs(title = 'Celastrol - MDAMB231', subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
-  xlab(parse(text = 'Average~(Celastrol~Samples~Across~Cell~Lines)')) +
-  ylab(parse(text = 'Average~(Celastrol - MDAMB231)')) + 
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
+  labs(title = 'QL-XII-47 - MDAMB231', subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  xlab(parse(text = 'Average~(QL-XII-47~Samples~Across~Cell~Lines)')) +
+  ylab(parse(text = 'Average~(QL-XII-47 - MDAMB231)')) + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 1))
 
-png('../Figures/F1C.png', width = 4800, height = 1500, res = 300)
-C1 | C2 | C3
-dev.off()
+# png('../Figures/F1C.png', width = 4800, height = 1500, res = 300)
+# C1 | C2 | C3
+# dev.off()
 
 layout <- "
 AAABBBDDDEEE
@@ -399,7 +410,7 @@ MMMNNNOOOPPP
 QQQQRRRRSSSS
 QQQQRRRRSSSS"
 
-png('../Figures/F1.png', width = 4800, height = 4500, res = 300)
+png('../Figures/F3.png', width = 5600, height = 5000, res = 300)
 A1 + A2 + A3 + A4 + A5 + A6 + A7 + A8 + A9 + A10 + A11 + 
   A12 + B1 + B2 + B3 + B4 + C1 + C2 + C3 + patchwork::plot_layout(design = layout, guides = 'collect', tag_level = 'new')
 dev.off()

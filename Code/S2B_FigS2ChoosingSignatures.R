@@ -102,7 +102,6 @@ o <- predict(lm(bulk~sc, df), newdata = data.frame(sc=df$sc), interval = 'predic
 df$bulk_sc_lwr <- o[,2]
 df$bulk_sc_upr <- o[,3]
 
-
 corValue <- statsExpressions::corr_test(df,sc, bulk, type = 'non')$expression[[1]]
 df$g <- rownames(df)
 df$g[!(((df$bulk < -1) & (df$sc < -1)) | ((df$bulk > 1) & (df$sc > 1)))] <- NA

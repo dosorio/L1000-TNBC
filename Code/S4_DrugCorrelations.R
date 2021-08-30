@@ -40,7 +40,7 @@ write.csv(combinationPotential, '../Results/S3_combinationPotential.csv')
 
 # Improved Performance
 (combinationPotential[1,1]/drugPotential[1,1])-1
-# 0.1231749
+# 0.1114373
 
 # Pharmacological effects
 drugProfiles <- read.csv('../Results/S1_Profiles.csv', row.names = 1)
@@ -65,7 +65,7 @@ F3A <- ggplot(df, aes(SC, DP, label = G)) +
   geom_abline(slope = -1, intercept = 0, lty = 2, color = 'red') +
   geom_point(pch = 16, alpha = df$alpha, color = df$C) + 
   geom_density_2d() + 
-  geom_text_repel(min.segment.length = 0, fontface = 3, size = 4) +
+  geom_text_repel(min.segment.length = 0, fontface = 3, size = 4, bg.color = 'white') +
   theme_bw() +
   labs(tag = 'A', title = 'QL-XII-47', subtitle = eLabel) +
   theme(plot.title = element_text(face = 2)) +
@@ -147,7 +147,7 @@ F3C <- ggplot(df, aes(SC, DP, label = G)) +
   geom_abline(slope = -1, intercept = 0, lty = 2, color = 'red') +
   geom_point(pch = 16, alpha = df$alpha, color = df$C) + 
   geom_density2d() + 
-  geom_text_repel(min.segment.length = 0, fontface = 3, size = 4) +
+  geom_text_repel(min.segment.length = 0, fontface = 3, size = 4, bg.color = 'white') +
   theme_bw() +
   labs(tag = 'D', title = 'QL-XII-47 + GSK-690693', subtitle = eLabel) +
   theme(plot.title = element_text(face = 2)) +
@@ -206,7 +206,7 @@ F3D5 <- plotEnrichment(MSigDB_Hallmarks[[E$pathway[eRank]]], drugCombination) +
   theme_bw() +
   theme(plot.title = element_text(face = 2))
 
-eRank <- 6
+eRank <- 7
 F3D6 <- plotEnrichment(MSigDB_Hallmarks[[E$pathway[eRank]]], drugCombination) +
   xlab('Gene Rank') +
   ylab('Enrichment Score') +
@@ -236,6 +236,7 @@ GGHI
 GGJK
 GGLM'
 
-png('../Figures/F3.png', width = 4800 * 0.85, height = 4800  * 0.8, res = 300)
+png('../Figures/F4.png', width = 4800 * 0.85, height = 4800 * 0.7, res = 300)
 F3A + F3B1 + F3B2 + F3B3 + F3B4 + F3B5 + F3C + F3D1 + F3D2 + F3D3 + F3D4 + F3D5 + F3D6 + F3A1 + plot_layout(design = plotLayout)
 dev.off()
+
