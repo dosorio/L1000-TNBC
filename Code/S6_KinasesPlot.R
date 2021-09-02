@@ -7,6 +7,6 @@ P[[2]] <- P[[2]] + theme_bw() + theme(legend.position = 'none', plot.title = ele
 P[[3]] <- P[[3]] + theme_bw() + theme(legend.position = 'none', plot.title = element_text(face = 2))
 P[[4]] <- P[[4]] + theme_bw() + theme(legend.position = 'none', plot.title = element_text(face = 2))
 
-png('../Figures/S3.png', width = 2000, height = 2000, res = 300)
+png('../Figures/S3.png', width = 1500, height = 1500, res = 300)
 P
 dev.off()
