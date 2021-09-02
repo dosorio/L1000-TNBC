@@ -20,9 +20,17 @@ l1000_concentration <- unlist(lapply(strsplit(l1000_names, '_'), function(X){X[(
 l1000_time <- unlist(lapply(strsplit(l1000_names, '_'), function(X){X[length(X)]}))
 sList <- cbind(l1000_names)
 
-S1 <- unique(data.frame(compound = l1000_compounds, cellLine = l1000_cellLine, concentration = l1000_concentration))
+S1 <- data.frame(compound = l1000_compounds, cellLine = l1000_cellLine, concentration = l1000_concentration)
 S1 <- S1[S1$cellLine %in% bCL,]
-# 176 compounds, 4 concentrations, 2 time points in 3 cell TNBC cell lines
+nrow(S1)
+# Profiles
+S1 <- unique(S1)
+# Compounds
+length(unique(S1$compound))
+# Concentrations
+table(S1$concentration)
+
+# 4899 profiles 205 compounds, 4 concentrations, 2 time points in 3 cell TNBC cell lines
 S1 <- apply(S1, 1, function(X){paste0(X, collapse = '_')})
 
 S1Profiles <- pbsapply(S1, function(N){
