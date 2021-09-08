@@ -122,7 +122,7 @@ A1 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   labs(tag = 'A', title = parse(text = 'QL-XII-47 - MDAMB231 - 0.08~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab('24 h') +
   ylab('6 h') + 
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 'bold'))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 'bold'))
 
 corValue <- cor(T1$Avg,T1$X6h, method = 'sp')
 A2 <- ggplot(T1, aes(Avg,X6h, label = G)) + 
@@ -134,7 +134,7 @@ A2 <- ggplot(T1, aes(Avg,X6h, label = G)) +
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~0.08~mu*M~Samples-MDAMB231)')) +
   ylab('6 h') + 
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6,  "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 corValue <- cor(T1$Avg,T1$X24h, method = 'sp')
 A3 <- ggplot(T1, aes(Avg,X24h , label = G)) + 
@@ -146,7 +146,7 @@ A3 <- ggplot(T1, aes(Avg,X24h , label = G)) +
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~0.08~mu*M~Samples-MDAMB231)')) +
   ylab('24 h') + 
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 T1 <- l1000_es[,colnames(l1000_es)[grepl('QL-XII-47_MDAMB231_0.4um',colnames(l1000_es))]]
 dnT1 <- dimnames(T1)
@@ -168,7 +168,7 @@ A4 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   labs(title = parse(text = 'QL-XII-47 - MDAMB231 - 0.4~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab('24 h') +
   ylab('6 h') + 
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 corValue <- cor(T1$Avg,T1$X6h, method = 'sp')
 A5 <- ggplot(T1, aes(Avg,X6h, label = G)) + 
@@ -180,7 +180,7 @@ A5 <- ggplot(T1, aes(Avg,X6h, label = G)) +
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~0.4~mu*M~Samples-MDAMB231)')) +
   ylab('6 h') + 
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 corValue <- cor(T1$Avg,T1$X24h, method = 'sp')
 A6 <- ggplot(T1, aes(Avg,X24h , label = G)) + 
@@ -192,7 +192,7 @@ A6 <- ggplot(T1, aes(Avg,X24h , label = G)) +
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~0.4~mu*M~Samples-MDAMB231)')) +
   ylab('24 h') + 
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 
 T1 <- l1000_es[,colnames(l1000_es)[grepl('QL-XII-47_MDAMB231_2um',colnames(l1000_es))]]
@@ -216,7 +216,7 @@ A7 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   labs(title = parse(text = 'QL-XII-47 - MDAMB231 - 2~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab('24 h') +
   ylab('6 h') + 
-  theme(plot.title = element_text(face = 2), panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2))
+  theme(plot.title = element_text(face = 2), panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2))
 
 corValue <- cor(T1$Avg,T1$X6h, method = 'sp')
 A8 <- ggplot(T1, aes(Avg,X6h, label = G)) + 
@@ -228,7 +228,7 @@ A8 <- ggplot(T1, aes(Avg,X6h, label = G)) +
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~2~mu*M~Samples-MDAMB231)')) +
   ylab('6 h') + 
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 corValue <- cor(T1$Avg,T1$X24h, method = 'sp')
 A9 <- ggplot(T1, aes(Avg,X24h , label = G)) + 
@@ -240,7 +240,7 @@ A9 <- ggplot(T1, aes(Avg,X24h , label = G)) +
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~2~mu*M~Samples-MDAMB231)')) +
   ylab('24 h') + 
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 T1 <- l1000_es[,colnames(l1000_es)[grepl('QL-XII-47_MDAMB231_10um',colnames(l1000_es))]]
 dnT1 <- dimnames(T1)
@@ -262,7 +262,7 @@ A10 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   labs(title = parse(text = 'QL-XII-47 - MDAMB231 - 10~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab('24 h') +
   ylab('6 h') + 
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 corValue <- cor(T1$Avg,T1$X6h, method = 'sp')
 A11 <- ggplot(T1, aes(Avg,X6h, label = G)) + 
@@ -274,7 +274,7 @@ A11 <- ggplot(T1, aes(Avg,X6h, label = G)) +
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~10~mu*M~Samples-MDAMB231)')) +
   ylab('6 h') + 
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 corValue <- cor(T1$Avg,T1$X24h, method = 'sp')
 A12 <- ggplot(T1, aes(Avg,X24h , label = G)) + 
@@ -286,7 +286,7 @@ A12 <- ggplot(T1, aes(Avg,X24h , label = G)) +
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~10~mu*M~Samples-MDAMB231)')) +
   ylab('24 h') + 
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 
 # png('../Figures/F1A.png', width = 4800, height = 2500, res = 300)
@@ -315,7 +315,7 @@ B1 <- ggplot(T2, aes(Avg, X0.08um, label = G)) +
   labs(tag = 'B',subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples-MDAMB231)')) +
   ylab(expression(atop('Average',('QL-XII-47'~0.08~mu*'M'~'Samples-MDAMB231'))))+
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 corValue <- cor(T2$Avg, T2$X0.4um, method = 'sp')
 B2 <- ggplot(T2, aes(Avg, X0.4um, label = G)) + 
@@ -327,7 +327,7 @@ B2 <- ggplot(T2, aes(Avg, X0.4um, label = G)) +
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples-MDAMB231)')) +
   ylab(expression(atop('Average',('QL-XII-47'~0.4~mu*'M'~'Samples-MDAMB231'))))+
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 corValue <- cor(T2$Avg, T2$X2um, method = 'sp')
 B3 <- ggplot(T2, aes(Avg, X2um, label = G)) + 
@@ -339,7 +339,7 @@ B3 <- ggplot(T2, aes(Avg, X2um, label = G)) +
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples- MDAMB231)')) +
   ylab(expression(atop('Average',('QL-XII-47'~2~mu*'M'~'Samples-MDAMB231'))))+
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 corValue <- cor(T2$Avg, T2$X10um, method = 'sp')
 B4 <- ggplot(T2, aes(Avg, X10um, label = G)) + 
@@ -351,7 +351,7 @@ B4 <- ggplot(T2, aes(Avg, X10um, label = G)) +
   labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples-MDAMB231)')) +
   ylab(expression(atop('Average',('QL-XII-47'~10~mu*'M'~'Samples-MDAMB231'))))+
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 2))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
 
 # png('../Figures/F1B.png', width = 4800, height = 1300, res = 300)
 # B1 | B2 | B3 | B4
@@ -378,7 +378,7 @@ C1 <- ggplot(T3, aes(Avg, BT20, label = G)) +
   labs(tag = 'C', title = 'QL-XII-47 - BT20', subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples~Across~Cell~Lines)')) +
   ylab(parse(text = 'Average~(QL-XII-47 - BT20)')) + 
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 1))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 1))
 
 corValue <- cor(T3$HS578T, T3$Avg, method = 'sp')
 C2 <- ggplot(T3, aes(Avg, HS578T, label = G)) + 
@@ -390,7 +390,7 @@ C2 <- ggplot(T3, aes(Avg, HS578T, label = G)) +
   labs(title = 'QL-XII-47 - HS578T', subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples~Across~Cell~Lines)')) +
   ylab(parse(text = 'Average~(QL-XII-47 - HS578T)')) + 
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 1))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 1))
 
 corValue <- cor(T3$MDAMB231, T3$Avg, method = 'sp')
 C3 <- ggplot(T3, aes(Avg, MDAMB231, label = G)) + 
@@ -399,10 +399,10 @@ C3 <- ggplot(T3, aes(Avg, MDAMB231, label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(title = 'QL-XII-47 - MDAMB231', subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(title = 'QL-XII-47 - MDAMB231', subtitle = parse(text = paste0('hat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples~Across~Cell~Lines)')) +
   ylab(parse(text = 'Average~(QL-XII-47 - MDAMB231)')) + 
-  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "forestgreen", "red"), fill=NA, size=2), plot.title = element_text(face = 1))
+  theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 1))
 
 # png('../Figures/F1C.png', width = 4800, height = 1500, res = 300)
 # C1 | C2 | C3
