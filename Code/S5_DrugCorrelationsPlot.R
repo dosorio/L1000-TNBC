@@ -1,3 +1,5 @@
+source('S4_DrugCorrelations.R')
+
 # Improved Performance
 (combinationPotential[1,1]/drugPotential[1,1])-1
 # 0.1114373
