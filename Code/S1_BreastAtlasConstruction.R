@@ -7,7 +7,6 @@ library(patchwork)
 library(Nebulosa)
 library(ggrepel)
 library(circlize)
-library(shadowtext)
 hsaPanglaoDB <- gmtPathways('https://raw.githubusercontent.com/dosorio/utilities/master/singleCell/markerGenes/hsaPanglaoDB.gmt')
 
 
@@ -145,7 +144,9 @@ densityPlot <- densityPlot[[4]]
 densityPlot <- densityPlot + 
   theme_bw() +
   labs(subtitle = expression(italic(n)==8938~Cells)) +
-  theme(legend.position = 'none', plot.title = element_text(face = 2))
+  theme(legend.position = c(1.25,0.55), legend.key.width=unit(0.25,"cm"), legend.background = element_rect(fill = NA)) + 
+  theme()
+densityPlot
 
 # MarkersPlot
 # markerGenes <- unlist(hsaPanglaoDB[c('T cells', 
@@ -221,31 +222,31 @@ EEEEEE
 EEEEEE
 '
 
-png('../Figures/F1.png', width = 4800*.6, height = 4800*.6, res = 300)
+png('../Figures/F1.png', width = 4800*.6, height = 4800*.65, res = 300)
 cellTypesPlot + healthyPlot + cancerPlot + densityPlot + dotPlot + 
-  plot_layout(design = pLayout)
+  plot_layout(design = pLayout) +  theme(legend.position = "bottom")
 dev.off()
 
-# TNBC Single cell Transcriptional Signatures
-breastData <- breastData[,Idents(breastData) %in% 'Epithelial cells']
-breastData <- FindNeighbors(breastData, reduction = 'umap', dims = 1:2)
-breastData <- FindClusters(breastData, resolution = 0.01)
-Idents(breastData) <- ifelse(Idents(breastData) == 0, yes = 'TP', no = 'TN')
-Idents(breastData) <- paste0(breastData$diseaseStatus, '_', Idents(breastData))
-UMAPPlot(breastData)
-DE <- FindMarkers(breastData, ident.1 = 'Cancer_TN', ident.2 = 'Healthy_TP', logfc.threshold = 0)
-write.csv(DE, '../Data/de_EC_TNBC-H.csv')
-save(breastData, file = '../Data/EpithelialCells.RData')
-
-# Comparing to healthy negative hormone receptors
-oDE <- FindMarkers(breastData, ident.1 = 'Cancer_TN', ident.2 = 'Healthy_TN', logfc.threshold = 0)
-write.csv(oDE, '../Data/de_EC_TNBC-TNH.csv')
-
-# Comparing H vs C
-Idents(breastData) <- breastData$diseaseStatus
-oDE <- FindMarkers(breastData, ident.1 = 'Cancer', ident.2 = 'Healthy', logfc.threshold = 0)
-write.csv(oDE, '../Data/de_EC_C-H.csv')
-
-# table(Idents(breastData))
-# Cancer_TN  Cancer_TP Healthy_TN Healthy_TP 
-# 2998       2732       6117       6206 
+# # TNBC Single cell Transcriptional Signatures
+# breastData <- breastData[,Idents(breastData) %in% 'Epithelial cells']
+# breastData <- FindNeighbors(breastData, reduction = 'umap', dims = 1:2)
+# breastData <- FindClusters(breastData, resolution = 0.01)
+# Idents(breastData) <- ifelse(Idents(breastData) == 0, yes = 'TP', no = 'TN')
+# Idents(breastData) <- paste0(breastData$diseaseStatus, '_', Idents(breastData))
+# UMAPPlot(breastData)
+# DE <- FindMarkers(breastData, ident.1 = 'Cancer_TN', ident.2 = 'Healthy_TP', logfc.threshold = 0)
+# write.csv(DE, '../Data/de_EC_TNBC-H.csv')
+# save(breastData, file = '../Data/EpithelialCells.RData')
+# 
+# # Comparing to healthy negative hormone receptors
+# oDE <- FindMarkers(breastData, ident.1 = 'Cancer_TN', ident.2 = 'Healthy_TN', logfc.threshold = 0)
+# write.csv(oDE, '../Data/de_EC_TNBC-TNH.csv')
+# 
+# # Comparing H vs C
+# Idents(breastData) <- breastData$diseaseStatus
+# oDE <- FindMarkers(breastData, ident.1 = 'Cancer', ident.2 = 'Healthy', logfc.threshold = 0)
+# write.csv(oDE, '../Data/de_EC_C-H.csv')
+# 
+# # table(Idents(breastData))
+# # Cancer_TN  Cancer_TP Healthy_TN Healthy_TP 
+# # 2998       2732       6117       6206 
