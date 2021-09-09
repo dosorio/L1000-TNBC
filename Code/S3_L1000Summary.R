@@ -119,7 +119,7 @@ A1 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(tag = 'A', title = parse(text = 'QL-XII-47 - MDAMB231 - 0.08~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(tag = 'A', title = parse(text = 'QL-XII-47 - MDAMB231 - 0.08~mu*M'), subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab('24 h') +
   ylab('6 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 'bold'))
@@ -131,7 +131,7 @@ A2 <- ggplot(T1, aes(Avg,X6h, label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~0.08~mu*M~Samples-MDAMB231)')) +
   ylab('6 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6,  "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
@@ -143,7 +143,7 @@ A3 <- ggplot(T1, aes(Avg,X24h , label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~0.08~mu*M~Samples-MDAMB231)')) +
   ylab('24 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
@@ -165,7 +165,7 @@ A4 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(title = parse(text = 'QL-XII-47 - MDAMB231 - 0.4~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(title = parse(text = 'QL-XII-47 - MDAMB231 - 0.4~mu*M'), subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab('24 h') +
   ylab('6 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
@@ -177,7 +177,7 @@ A5 <- ggplot(T1, aes(Avg,X6h, label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~0.4~mu*M~Samples-MDAMB231)')) +
   ylab('6 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
@@ -189,7 +189,7 @@ A6 <- ggplot(T1, aes(Avg,X24h , label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~0.4~mu*M~Samples-MDAMB231)')) +
   ylab('24 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
@@ -213,7 +213,7 @@ A7 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(title = parse(text = 'QL-XII-47 - MDAMB231 - 2~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(title = parse(text = 'QL-XII-47 - MDAMB231 - 2~mu*M'), subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab('24 h') +
   ylab('6 h') + 
   theme(plot.title = element_text(face = 2), panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2))
@@ -225,7 +225,7 @@ A8 <- ggplot(T1, aes(Avg,X6h, label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~2~mu*M~Samples-MDAMB231)')) +
   ylab('6 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
@@ -237,7 +237,7 @@ A9 <- ggplot(T1, aes(Avg,X24h , label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~2~mu*M~Samples-MDAMB231)')) +
   ylab('24 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
@@ -259,7 +259,7 @@ A10 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(title = parse(text = 'QL-XII-47 - MDAMB231 - 10~mu*M'), subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(title = parse(text = 'QL-XII-47 - MDAMB231 - 10~mu*M'), subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab('24 h') +
   ylab('6 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
@@ -271,7 +271,7 @@ A11 <- ggplot(T1, aes(Avg,X6h, label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~10~mu*M~Samples-MDAMB231)')) +
   ylab('6 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
@@ -283,7 +283,7 @@ A12 <- ggplot(T1, aes(Avg,X24h , label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~10~mu*M~Samples-MDAMB231)')) +
   ylab('24 h') + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
@@ -312,7 +312,7 @@ B1 <- ggplot(T2, aes(Avg, X0.08um, label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(tag = 'B',subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(tag = 'B',subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples-MDAMB231)')) +
   ylab(expression(atop('Average',('QL-XII-47'~0.08~mu*'M'~'Samples-MDAMB231'))))+
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
@@ -324,7 +324,7 @@ B2 <- ggplot(T2, aes(Avg, X0.4um, label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples-MDAMB231)')) +
   ylab(expression(atop('Average',('QL-XII-47'~0.4~mu*'M'~'Samples-MDAMB231'))))+
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
@@ -336,7 +336,7 @@ B3 <- ggplot(T2, aes(Avg, X2um, label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples- MDAMB231)')) +
   ylab(expression(atop('Average',('QL-XII-47'~2~mu*'M'~'Samples-MDAMB231'))))+
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
@@ -348,7 +348,7 @@ B4 <- ggplot(T2, aes(Avg, X10um, label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples-MDAMB231)')) +
   ylab(expression(atop('Average',('QL-XII-47'~10~mu*'M'~'Samples-MDAMB231'))))+
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 2))
@@ -375,7 +375,7 @@ C1 <- ggplot(T3, aes(Avg, BT20, label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(tag = 'C', title = 'QL-XII-47 - BT20', subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(tag = 'C', title = 'QL-XII-47 - BT20', subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples~Across~Cell~Lines)')) +
   ylab(parse(text = 'Average~(QL-XII-47 - BT20)')) + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 1))
@@ -387,7 +387,7 @@ C2 <- ggplot(T3, aes(Avg, HS578T, label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(title = 'QL-XII-47 - HS578T', subtitle = parse(text = paste0('rho == ', round(corValue,3)))) +
+  labs(title = 'QL-XII-47 - HS578T', subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples~Across~Cell~Lines)')) +
   ylab(parse(text = 'Average~(QL-XII-47 - HS578T)')) + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 1))
@@ -399,7 +399,7 @@ C3 <- ggplot(T3, aes(Avg, MDAMB231, label = G)) +
   theme_bw() + 
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
   geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) + 
-  labs(title = 'QL-XII-47 - MDAMB231', subtitle = parse(text = paste0('hat(rho) == ', round(corValue,3)))) +
+  labs(title = 'QL-XII-47 - MDAMB231', subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples~Across~Cell~Lines)')) +
   ylab(parse(text = 'Average~(QL-XII-47 - MDAMB231)')) + 
   theme(panel.border = element_rect(colour = ifelse(corValue >= 0.6, "black", "gray70"), fill=NA, size=2), plot.title = element_text(face = 1))
