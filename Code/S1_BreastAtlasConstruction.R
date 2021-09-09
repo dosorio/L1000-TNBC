@@ -145,7 +145,7 @@ densityPlot <- densityPlot +
   theme_bw() +
   labs(subtitle = expression(italic(n)==8938~Cells)) +
   theme(legend.position = c(1.25,0.55), legend.key.width=unit(0.25,"cm"), legend.background = element_rect(fill = NA)) + 
-  theme()
+  theme(plot.title = element_text(face = 2))
 densityPlot
 
 # MarkersPlot
