@@ -9,7 +9,11 @@ library(limma)
 library(DESeq2)
 library(patchwork)
 library(statsExpressions)
+library(GSVA)
+library(ComplexHeatmap)
+source('https://raw.githubusercontent.com/dosorio/utilities/master/cheatmap2ggplot.R')
 
+MSigDB_Hallmarks <- gmtPathways('https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName=MSigDB_Hallmark_2020')
 
 ### PCS
 load('../Data/EpithelialCells.RData')
