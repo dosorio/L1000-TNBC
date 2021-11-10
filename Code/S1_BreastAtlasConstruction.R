@@ -106,13 +106,15 @@ levels(Idents(breastData)) <- c('T cells',
   )
 
 # Cell-types plot
-cellTypesPlot <- UMAPPlot(breastData, label = TRUE) + 
+cellTypesPlot <- UMAPPlot(breastData, label = TRUE, repel = TRUE) + 
   theme_bw() +
   xlim(-15,15) + 
   labs(tag = 'A', title = 'Breast', subtitle = expression(italic(n)==77384~Cells)) + 
   theme(legend.position = 'none', plot.title = element_text(face = 2)) +
   xlab('UMAP 1') +
   ylab('UMAP 2')
+
+cellTypesPlot
 
 # Disease Status
 diseaseStatus <- as.vector(breastData$orig.ident)
