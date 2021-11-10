@@ -9,6 +9,8 @@ library(limma)
 library(DESeq2)
 library(patchwork)
 library(statsExpressions)
+library(GSVA)
+library(ComplexHeatmap)
 
 
 ### PCS
@@ -147,6 +149,21 @@ P1C
 df <- data.frame(sc = scFC[iGenes], pc = pcFC[iGenes], bulk = bulkFC[iGenes])
 df <- df[complete.cases(df),]
 
+# Heatmap
+MSigDB_Hallmarks <- gmtPathways('https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName=MSigDB_Hallmark_2020')
+ssgsea <- gsva(as.matrix(df), MSigDB_Hallmarks, method='ssgsea')
+ssgsea <- round(ssgsea,2)
+colnames(ssgsea) <- c('Single-Cell', 'Pseudo-Bulk', 'Bulk')
+rownames(ssgsea) <- gsub('Pathway','P.',rownames(ssgsea))
+sPath <- rowSums(ssgsea < 0) %in% c(0,3)
+HM <- Heatmap(ssgsea, show_row_names = TRUE, name = 'ES', column_order = 1:3, show_row_dend = FALSE, show_column_dend = FALSE,
+              heatmap_legend_param = list(at = c(-1, 0, 1), grid_width = unit(2, "mm"))) +
+  rowAnnotation(link = anno_mark(at = which(sPath),
+                                 labels = rownames(ssgsea)[sPath]))
+HM <- ggplotify::as.ggplot(grid::grid.grabExpr(ComplexHeatmap::draw(HM)))
+HM <- HM + labs(tag = 'C')
+HM
+
 o <- predict(lm(pc~sc, df), newdata = data.frame(sc=df$sc), interval = 'prediction', level = 0.95)
 df$pc_sc_lwr <- o[,2]
 df$pc_sc_upr <- o[,3]
@@ -195,7 +212,13 @@ P1E <- ggplot(df, aes(sc, bulk, label = g)) +
   theme(plot.title = element_text(face = 2), plot.subtitle = element_text(size = 10))
 P1E 
 
-png('../Figures/F2.png', width = 4800*0.7, height = 4800*0.7, res = 300)
-(P1A | P1B | P1C)/(P1D | P1E)
+dP <- '
+AABBCCFFF
+AABBCCFFF
+DDDEEEFFF
+DDDEEEFFF'
+
+png('../Figures/F2.png', width = 4650, height = 4800*0.6, res = 300)
+P1A + P1B + P1C + P1D + P1E + HM + plot_layout(design = dP)
 dev.off()
 
