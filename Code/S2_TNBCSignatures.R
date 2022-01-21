@@ -212,13 +212,33 @@ P1E <- ggplot(df, aes(sc, bulk, label = g)) +
   theme(plot.title = element_text(face = 2), plot.subtitle = element_text(size = 10))
 P1E 
 
+# Personalized medicine
+TN <- breastData[,Idents(breastData) %in% c('Cancer_TN', 'Healthy_TP')]
+S <- unique(data.frame(TN$orig.ident, TN$diseaseStatus))
+E <- sapply(S$TN.orig.ident, function(OI){
+  rowSums(TN@assays$RNA@data[,TN$orig.ident %in% OI])
+})
+E <- gsva(E, MSigDB_Hallmarks)
+PS <- ComplexHeatmap::Heatmap(E, column_title_gp = gpar(fill = c("#ff4d52", "#4dafff"), font = 2, color = 'white'),
+                              column_split = gsub('Cancer', 'TNBC', S$TN.diseaseStatus), 
+                              name = 'ES', 
+                              show_row_dend = FALSE, 
+                              show_column_names = FALSE, 
+                              heatmap_legend_param = list(at = c(-1, 0, 1), grid_width = unit(2, "mm"))) +
+  rowAnnotation(link = anno_mark(at = which(sPath),
+                                 labels = rownames(E)[sPath]))
+#PS <- ggplotify::as.ggplot(grid::grid.grabExpr(ComplexHeatmap::draw(PS)))
+
 dP <- '
 AABBCCFFF
 AABBCCFFF
 DDDEEEFFF
 DDDEEEFFF'
 
-png('../Figures/F2.png', width = 4650, height = 4800*0.6, res = 300)
-P1A + P1B + P1C + P1D + P1E + HM + plot_layout(design = dP)
+png('../Figures/F2.png', width = 4650, height = 3000, res = 300)
+P1A + P1B + P1C + P1D + P1E + HM +  plot_layout(design = dP)
 dev.off()
 
+png('../Figures/F5.png', width = 4000, height = 2000, res = 300)
+PS
+dev.off()
