@@ -1,15 +1,36 @@
-Sample  Subtype
-sc5rJUQ024  Her2
-sc5rJUQ026  TNBC
-sc5rJUQ033  TNBC
-sc5rJUQ039  TNBC
-sc5rJUQ042  TNBC
-sc5rJUQ043  Her2
-sc5rJUQ045  TNBC
-sc5rJUQ046  Her2
-sc5rJUQ050  Her2
-sc5rJUQ051  TNBC
-sc5rJUQ053  TNBC
-sc5rJUQ058  TNBC
-sc5rJUQ060  LumB
-sc5rJUQ064  LumA
+                TN.orig.ident TN.diseaseStatus Subtype
+CID44041_C1981       CID44041           Cancer    TNBC
+CID4465_C1013         CID4465           Cancer    TNBC
+CID4495_C538          CID4495           Cancer    TNBC
+CID44971_C1285       CID44971           Cancer    TNBC
+CID44991_C2985       CID44991           Cancer    TNBC
+CID4513_C176          CID4513           Cancer    TNBC
+CID4515_C945          CID4515           Cancer    TNBC
+CID4523_C589          CID4523           Cancer    TNBC
+GSM3099846_C14     GSM3099846          Healthy Healthy
+GSM3099847_C17     GSM3099847          Healthy Healthy
+GSM3099848_C6      GSM3099848          Healthy Healthy
+GSM3099849_C7      GSM3099849          Healthy Healthy
+GSM5022599_C3      GSM5022599          Healthy Healthy
+GSM5022600_C1      GSM5022600          Healthy Healthy
+GSM5022601_C1      GSM5022601          Healthy Healthy
+GSM5022602_C8      GSM5022602          Healthy Healthy
+GSM5022603_C2      GSM5022603          Healthy Healthy
+sc5rJUQ026_C60     sc5rJUQ026           Cancer    TNBC
+sc5rJUQ033_C21     sc5rJUQ033           Cancer    TNBC
+sc5rJUQ039_C65     sc5rJUQ039           Cancer    TNBC
+sc5rJUQ042_C6      sc5rJUQ042           Cancer    TNBC
+sc5rJUQ043_C62     sc5rJUQ043           Cancer    Her2
+sc5rJUQ045_C6      sc5rJUQ045           Cancer    TNBC
+sc5rJUQ046_C35     sc5rJUQ046           Cancer    Her2
+sc5rJUQ050_C62     sc5rJUQ050           Cancer    Her2
+sc5rJUQ051_C90     sc5rJUQ051           Cancer    TNBC
+sc5rJUQ053_C1      sc5rJUQ053           Cancer    TNBC
+sc5rJUQ058_C23     sc5rJUQ058           Cancer    LumB
+sc5rJUQ060_C276    sc5rJUQ060           Cancer    LumA
+sc5rJUQ064_C2      sc5rJUQ064           Cancer    TNBC
+scrJUQ059_C63       scrJUQ059           Cancer    LumB
+scrJUQ068_C3        scrJUQ068           Cancer    TNBC
+scrJUQ070_C6        scrJUQ070           Cancer    LumA
+scrJUQ072_C16       scrJUQ072           Cancer    LumA
+TSMammary_C15       TSMammary          Healthy Healthy
