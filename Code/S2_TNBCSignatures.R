@@ -219,14 +219,15 @@ E <- sapply(S$TN.orig.ident, function(OI){
   rowSums(TN@assays$RNA@data[,TN$orig.ident %in% OI])
 })
 E <- gsva(E, MSigDB_Hallmarks)
-PS <- ComplexHeatmap::Heatmap(E, column_title_gp = gpar(fill = c("#ff4d52", "#4dafff"), font = 2, color = 'white'),
-                              column_split = gsub('Cancer', 'TNBC', S$TN.diseaseStatus), 
+PS <- ComplexHeatmap::Heatmap(E, column_title_gp = gpar(fill = c("#F24405", "#348888", "#22BABB", "#FA7F08", "#9EF8EE"), font = 2, color = 'white'),
+                              column_split = S$Subtype, 
                               name = 'ES', 
                               show_row_dend = FALSE, 
-                              show_column_names = FALSE, 
+                              show_column_names = TRUE, 
                               heatmap_legend_param = list(at = c(-1, 0, 1), grid_width = unit(2, "mm"))) +
   rowAnnotation(link = anno_mark(at = which(sPath),
                                  labels = rownames(E)[sPath]))
+PS
 #PS <- ggplotify::as.ggplot(grid::grid.grabExpr(ComplexHeatmap::draw(PS)))
 
 dP <- '
