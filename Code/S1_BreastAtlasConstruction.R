@@ -92,18 +92,67 @@ breastData <- FindClusters(breastData, resolution = 0.005)
 #   E <- E[order(E$padj),]
 # })
 
+CT1 <- plot_density(breastData, 'EPCAM') + 
+  theme_bw() + 
+  theme(plot.title = element_text(face = 4), 
+        legend.position = 'None')
+
+CT2 <- plot_density(breastData, 'MKI67') + 
+  theme_bw() + 
+  theme(plot.title = element_text(face = 4), 
+        legend.position = 'None')
+
+CT3 <- plot_density(breastData, 'CD3D') + 
+  theme_bw() + 
+  theme(plot.title = element_text(face = 4), 
+        legend.position = 'None')
+
+CT4 <- plot_density(breastData, 'CD68') + 
+  theme_bw() + 
+  theme(plot.title = element_text(face = 4), 
+        legend.position = 'None')
+
+CT5 <- plot_density(breastData,'CD19') + 
+  theme_bw() + 
+  theme(plot.title = element_text(face = 4), 
+        legend.position = 'None')
+
+CT6 <- plot_density(breastData,'JCHAIN') + 
+  theme_bw() + 
+  theme(plot.title = element_text(face = 4), 
+        legend.position = 'None')
+
+CT7 <- plot_density(breastData,'PECAM1') + 
+  theme_bw() + 
+  theme(plot.title = element_text(face = 4), 
+        legend.position = 'None')
+
+CT8 <- plot_density(breastData,'PDGFRB') + 
+  theme_bw() + 
+  theme(plot.title = element_text(face = 4), 
+        legend.position = 'None')
+
+CT9 <- plot_density(breastData, 'ACTA2') + 
+  theme_bw() + 
+  theme(plot.title = element_text(face = 4), 
+        legend.position = 'None')
+
+png('../Figures/CellTypesMarker.png', width = 2400, height = 2400, res = 300)
+CT1 + CT2 + CT3 + CT4 + CT5 + CT6 + CT7 + CT8 + CT9 
+dev.off()
+
 levels(Idents(breastData)) <- c('T cells', 
-  'Epithelial cells', 
-  'Fibroblasts',
-  'Smooth muscle cells',
-  'Macrophages',
-  'B cells',
-  'Gamma delta T cells',
-  'Endothelial cells',
-  'Myoepithelial cells',
-  'Memory\nB cells', 
-  'Macrophages'
-  )
+                                'Epithelial cells', 
+                                'Mesenchymal cells',
+                                'Smooth muscle cells',
+                                'Myeloid cells',
+                                'B cells',
+                                'Cycling cells',
+                                'Endothelial cells',
+                                'Myoepithelial cells',
+                                'B cells', 
+                                'Myeloid cells'
+)
 
 # Cell-types plot
 cellTypesPlot <- UMAPPlot(breastData, label = TRUE, repel = TRUE) + 
@@ -151,45 +200,25 @@ densityPlot <- densityPlot +
 densityPlot
 
 # MarkersPlot
-# markerGenes <- unlist(hsaPanglaoDB[c('T cells', 
-#                       'Epithelial cells', 
-#                       'Fibroblasts',
-#                       'Smooth muscle cells',
-#                       'Macrophages',
-#                       'B cells',
-#                       'Gamma delta T cells',
-#                       'Endothelial cells',
-#                       'Myoepithelial cells',
-#                       'Memory B cells', 
-#                       'Macrophages')])
-# markerGenes <- table(markerGenes)
-# markerGenes <- names(markerGenes[markerGenes == 1])
-# markerGenes <- markerGenes[markerGenes %in% rownames(breastData)]
-# 
-# markerDE <- FindAllMarkers(breastData, features = markerGenes)
-# write.csv(markerDE, file = '../Results/cellTypeMarkerDE.csv')
-markerDE <- read.csv('../Results/cellTypeMarkerDE.csv')
-markerDE <- markerDE[markerDE$p_val_adj < 0.05,]
-markerDE <- lapply(unique(markerDE$cluster),function(X){
-  tDExpression <- markerDE[markerDE$cluster %in% X,]
-  tDExpression <- tDExpression[order(tDExpression$avg_log2FC, decreasing = TRUE),]
-  FC <- tDExpression$avg_log2FC
-  names(FC) <- tDExpression$gene
-  return(FC[1:5])
-})
-gLabels <- unique(unlist(lapply(markerDE, names)))
-
+Idents(breastData) <- breastData$seurat_clusters
 levels(Idents(breastData)) <- c('T cells', 
                                 'Epithelial cells', 
-                                'Fibroblasts',
+                                'Mesenchymal cells',
                                 'Smooth muscle cells',
-                                'Macrophages',
+                                'Myeloid cells',
                                 'B cells',
-                                'Gamma delta T cells',
+                                'Cycling cells',
                                 'Endothelial cells',
                                 'Myoepithelial cells',
-                                'Memory B cells', 
-                                'Macrophages')
+                                'B cells', 
+                                'Myeloid cells'
+)
+
+markerDE <- pbapply::pblapply(levels(Idents(breastData)), function(X){
+  markerDE <- FoldChange(breastData, ident.1 = X)
+  rownames(markerDE[order(markerDE$avg_log2FC, decreasing = TRUE),])[1:5]
+})
+gLabels <- unique(unlist(markerDE))
 
 dotPlot <- DotPlot(breastData, features = gLabels, dot.min = 0.20, scale = TRUE, dot.scale = 5) + 
   theme_bw() + 
