@@ -231,6 +231,22 @@ dotPlot <- DotPlot(breastData, features = gLabels, dot.min = 0.20, scale = TRUE,
   
 dotPlot
 
+xFibroblast <- plot_density(breastData, features = c('COL1A1', 'C1R', 
+                                                     'SERPINE1', 'MYL9', 
+                                                     'CFD', 'APOE', 
+                                                     'MFAP5', 'PI16', 
+                                                     'IGF1', 'MMP2',
+                                                     'ACTA2', 'MYH11', 
+                                                     'RGS5', 'NOTCH3',
+                                                     'TFPI'), joint = TRUE)
+png('Fibroblasts.png', width = 3000, height = 3000, res = 300)
+xFibroblast[[16]] + theme(legend.position = 'None') + labs(title = 'COL1A1+ C1R+ SERPINE1+ MYL9+ CFD+\nAPOE+ MFAP5+ PI16+ IGF1+ MMP2+\nACTA2+ MYH11+ RGS5+ NOTCH3+ TFPI')
+dev.off()
+
+xMast <- plot_density(breastData, c('TPSB2','TPSAB1','GATA2'), joint = TRUE)
+png('MastCells.png', width = 3000, height = 3000, res = 300)
+xMast[[4]] + theme(legend.position = 'None')
+dev.off()
 
 # Plot
 pLayout <- '
@@ -265,6 +281,7 @@ dev.off()
 # Idents(breastData) <- ifelse(Idents(breastData) == 0, yes = 'TP', no = 'TN')
 # Idents(breastData) <- paste0(breastData$diseaseStatus, '_', Idents(breastData))
 # UMAPPlot(breastData)
+
 # DE <- FindMarkers(breastData, ident.1 = 'Cancer_TN', ident.2 = 'Healthy_TP', logfc.threshold = 0)
 # write.csv(DE, '../Data/de_EC_TNBC-H.csv')
 # save(breastData, file = '../Data/EpithelialCells.RData')
@@ -277,7 +294,14 @@ dev.off()
 # Idents(breastData) <- breastData$diseaseStatus
 # oDE <- FindMarkers(breastData, ident.1 = 'Cancer', ident.2 = 'Healthy', logfc.threshold = 0)
 # write.csv(oDE, '../Data/de_EC_C-H.csv')
-# 
+
+# Comparing TNBC vs all Healthy
+# I <- as.vector(Idents(breastData))
+# I[grepl('Healthy', I)] <- "Healthy"
+# Idents(breastData) <- I
+# oDE <- FindMarkers(breastData, ident.1 = 'Cancer_TN', ident.2 = 'Healthy', logfc.threshold = 0)
+# write.csv(oDE, '../Data/de_EC_TNBC-allH.csv')
+
 # # table(Idents(breastData))
 # # Cancer_TN  Cancer_TP Healthy_TN Healthy_TP 
 # # 2998       2732       6117       6206 
