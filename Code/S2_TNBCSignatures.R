@@ -243,3 +243,18 @@ dev.off()
 png('../Figures/F5.png', width = 4000, height = 2000, res = 300)
 PS
 dev.off()
+
+
+
+
+### Levels of expression
+load('../Data/EpithelialCells.RData')
+Idents(breastData) <- gsub('_', ' ', Idents(breastData))
+Idents(breastData) <- factor(Idents(breastData), levels = c('Cancer TP', 'Healthy TP','Cancer TN', 'Healthy TN'))
+PS2 <- DotPlot(breastData, features = c('ESR1', 'PGR', 'ERBB2'), dot.scale = 10, cols = c('white', 'darkblue'), col.min = -0.2, col.max = 1)
+PS2 <- PS2 + theme_bw() + xlab('Genes') +
+  theme(panel.grid = element_blank()) + ylab('Epithelial Cell')
+
+png('../Figures/S4.png', width = 1250, height = 1000, res = 300)
+print(PS2)
+dev.off()
