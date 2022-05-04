@@ -125,7 +125,7 @@ P1A <- ggplot(df, aes(sc, bulk, label = g)) +
   geom_point(pch = 16, alpha = ifelse(df$color == 'black', 0.25,1), color = df$color) + 
   geom_abline(slope = 1, intercept = 0, color = 'red', lty = 2) + 
   geom_density2d() + 
-  labs(title = 'TN Breast Cancer - TP Healthy', subtitle = corValue) +
+  labs(title = 'TN-like Cancer Cells - TP-like Healthy Cells', subtitle = corValue) +
   geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, bg.color = 'white', bg.r = 0.1) + 
   theme_bw() +
   xlab(log[2]~(Fold-Change~Single-Cell~RNA-seq)) +
@@ -174,7 +174,7 @@ P1B <- ggplot(df, aes(sc, bulk, label = g)) +
   geom_point(pch = 16, alpha = ifelse(df$color == 'black', 0.25,1), color = df$color) + 
   geom_abline(slope = 1, intercept = 0, color = 'red', lty = 2) + 
   geom_density2d() + 
-  labs(title = 'Breast Cancer - Healthy', subtitle = corValue) +
+  labs(title = 'Cancer Cells - Healthy Cells', subtitle = corValue) +
   geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, bg.color = 'white', bg.r = 0.1) + 
   theme_bw() +
   xlab(log[2]~(Fold-Change~Single-Cell~RNA-seq)) +
@@ -224,7 +224,7 @@ P1C <- ggplot(df, aes(sc, bulk, label = g)) +
   geom_point(pch = 16, alpha = ifelse(df$color == 'black', 0.25,1), color = df$color) + 
   geom_abline(slope = 1, intercept = 0, color = 'red', lty = 2) + 
   geom_density2d() + 
-  labs(title = 'TN Breast Cancer - TN Healthy', subtitle = corValue) +
+  labs(title = 'TN-like Cancer Cells - TN-like Healthy Cells', subtitle = corValue) +
   geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, bg.color = 'white', bg.r = 0.1) + 
   theme_bw() +
   xlab(log[2]~(Fold-Change~Single-Cell~RNA-seq)) +
@@ -248,7 +248,7 @@ P1D <- ggplot(df, aes(sc, bulk, label = g)) +
   geom_point(pch = 16, alpha = ifelse(df$color == 'black', 0.25,1), color = df$color) + 
   geom_abline(slope = 1, intercept = 0, color = 'red', lty = 2) + 
   geom_density2d() + 
-  labs(title = 'TN Breast Cancer - Healthy Epithelial', subtitle = corValue) +
+  labs(title = 'TN-like Cancer Cells - Healthy Epithelial', subtitle = corValue) +
   geom_text_repel(min.segment.length = 0, fontface = 'italic', size = 3.5, bg.color = 'white', bg.r = 0.1) + 
   theme_bw() +
   xlab(log[2]~(Fold-Change~Single-Cell~RNA-seq)) +
