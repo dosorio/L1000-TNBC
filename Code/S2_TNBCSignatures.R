@@ -250,7 +250,8 @@ dev.off()
 ### Levels of expression
 load('../Data/EpithelialCells.RData')
 Idents(breastData) <- gsub('_', ' ', Idents(breastData))
-Idents(breastData) <- factor(Idents(breastData), levels = c('Cancer TP', 'Healthy TP','Cancer TN', 'Healthy TN'))
+Idents(breastData) <- paste0(Idents(breastData), '-like')
+Idents(breastData) <- factor(Idents(breastData), levels = c('Cancer TP-like', 'Healthy TP-like','Cancer TN-like', 'Healthy TN-like'))
 PS2 <- DotPlot(breastData, features = c('ESR1', 'PGR', 'ERBB2'), dot.scale = 10, cols = c('white', 'darkblue'), col.min = -0.2, col.max = 1)
 PS2 <- PS2 + theme_bw() + xlab('Genes') +
   theme(panel.grid = element_blank()) + ylab('Epithelial Cell')
