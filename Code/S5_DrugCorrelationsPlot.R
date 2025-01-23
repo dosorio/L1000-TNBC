@@ -202,3 +202,86 @@ png('../Figures/F4.png', width = 4800 * 0.85, height = 4800 * 0.7, res = 300)
 F3A + F3B1 + F3B2 + F3B3 + F3B4 + F3B5 + F3C + F3D1 + F3D2 + F3D3 + F3D4 + F3D5 + F3D6 + F3A1 + plot_layout(design = plotLayout)
 dev.off()
 
+library(dplyr)
+library(ggpubr)
+library(patchwork)
+t1Data <- data.frame(A = c(52.81, 54.48, 14.56, NA),  B= c(88.29, 87.45, 92.12, 90.04), C = c(46.07, 13.75, 48.48, 40.83), D = c(100.1,100,99.9, NA))
+t1Data <- reshape2::melt(t1Data)
+t1Data <- na.omit(t1Data)
+levels(t1Data$variable) <- c('QL-XII-47', 'GSK-690693', 'Combination', 'Control')
+t1Data$variable <- factor(t1Data$variable, c('Combination', 'QL-XII-47', 'GSK-690693', 'Control') )
+t1Data$cellLine <- 'DU4475'
+t1Summary <- t1Data %>% group_by(variable) %>% summarize(M = mean(value), L = M - sd(value), U = M + sd(value))
+
+T1 <- ggplot(t1Data, aes(value, variable)) + 
+  geom_errorbarh(data = t1Summary, aes(y = variable, x = M, xmin = L, xmax = U), height = 0.2) + 
+  geom_bar(position = "dodge", stat = "summary",fun = "mean", fill = c('gray30','gray50','gray70','gray90')) +
+  geom_jitter(height = 0.1, alpha = 0.5, pch = 16) + theme_light() +
+  ylab('Treatment') +
+  xlab('Viability') +
+  stat_compare_means(aes(label = ..p.signif..), 
+                     comparisons = list(c(1,2), c(1,3), c(1,4)), 
+                     method = 't.test', 
+                     method.args = list(alternative = 'less'), 
+                     hide.ns = TRUE, tip.length = 0.01) +
+  theme(plot.title = element_text(face = 2)) +
+  labs(title = 'DU4475') +
+  geom_vline(xintercept = prod(t1Summary$M[c(2,3)])/100, color = 'red', lty = 2)
+
+
+t1Data <- data.frame(A = c(41.28, 35.8, 23.06, NA),  B= c(36.67, 31.37, 36.76, 41.46), C = c(14.35, 20.59, 27.47, 15.58), D = c(100.1,100,99.9, NA))
+t1Data <- reshape2::melt(t1Data)
+t1Data <- na.omit(t1Data)
+levels(t1Data$variable) <- c('QL-XII-47', 'GSK-690693', 'Combination', 'Control')
+t1Data$variable <- factor(t1Data$variable, c('Combination', 'QL-XII-47', 'GSK-690693', 'Control') )
+t1Data$cellLine <- 'BT20'
+t1Summary <- t1Data %>% group_by(variable) %>% summarize(M = mean(value), L = M - sd(value), U = M + sd(value))
+
+T2 <- ggplot(t1Data, aes(value, variable)) + 
+  geom_errorbarh(data = t1Summary, aes(y = variable, x = M, xmin = L, xmax = U), height = 0.2) + 
+  geom_bar(position = "dodge", stat = "summary",fun = "mean", fill = c('gray30','gray50','gray70','gray90')) +
+  geom_jitter(height = 0.1, alpha = 0.5, pch = 16) + theme_light() +
+  ylab('Treatment') +
+  xlab('Viability') +
+  stat_compare_means(aes(label = ..p.signif..), 
+                     comparisons = list(c(1,2), c(1,3), c(1,4)), 
+                     method = 't.test', 
+                     method.args = list(alternative = 'less'), 
+                     hide.ns = TRUE, tip.length = 0.01) +
+  theme(plot.title = element_text(face = 2)) +
+  labs(title = 'BT20') +
+  geom_vline(xintercept = prod(t1Summary$M[c(2,3)])/100, color = 'red', lty = 2)
+
+
+t1Data <- data.frame(A = c(72.65, 90.84, 78.16),  B= c(76.94, 97.23, 79.75), C = c(58.59, 71.96, 61.70), D = c(100.1,100,99.9))
+t1Data <- reshape2::melt(t1Data)
+t1Data <- na.omit(t1Data)
+levels(t1Data$variable) <- c('QL-XII-47', 'GSK-690693', 'Combination', 'Control')
+t1Data$variable <- factor(t1Data$variable, c('Combination', 'QL-XII-47', 'GSK-690693', 'Control') )
+t1Data$cellLine <- 'CAL120'
+t1Summary <- t1Data %>% group_by(variable) %>% summarize(M = mean(value), L = M - sd(value), U = M + sd(value))
+
+T3 <- ggplot(t1Data, aes(value, variable)) + 
+  geom_errorbarh(data = t1Summary, aes(y = variable, x = M, xmin = L, xmax = U), height = 0.2) + 
+  geom_bar(position = "dodge", stat = "summary",fun = "mean", fill = c('gray30','gray50','gray70','gray90')) +
+  geom_jitter(height = 0.1, alpha = 0.5, pch = 16) + theme_light() +
+  ylab('Treatment') +
+  xlab('Viability') +
+  stat_compare_means(aes(label = ..p.signif..), 
+                     comparisons = list(c(1,2), c(1,3), c(1,4)), 
+                     method = 't.test', 
+                     method.args = list(alternative = 'less'), 
+                     hide.ns = TRUE, tip.length = 0.01) +
+  labs(title = 'CAL120')  +
+  theme(plot.title = element_text(face = 2)) +
+  labs(tag = 'F') +
+  geom_vline(xintercept = prod(t1Summary$M[c(2,3)])/100, color = 'red', lty = 2)
+
+
+png('../Figures/F4A.png', width = 4800 * 0.85, height = 4800 * 0.12, res = 300)
+T3 | T2 | T1
+dev.off()
+
+viabilityData <- bind_rows(T1$data, T2$data, T3$data)
+colnames(viabilityData) <- c('Treatment', 'Viability', 'Cell Line')
+readr::write_csv(viabilityData, '../Results/S6_Viability.csv')

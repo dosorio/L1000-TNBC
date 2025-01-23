@@ -13,6 +13,22 @@ library(GSVA)
 library(ComplexHeatmap)
 
 
+### Individual FC
+load('../Data/EpithelialCells.RData')
+breastData <- breastData[,Idents(breastData) %in% c('Cancer_TN', 'Healthy_TP')]
+newIdent <- paste0(breastData$orig.ident, '_', Idents(breastData))
+
+newIdent2 <- newIdent
+newIdent2[grepl('Healthy',newIdent2)] <- 'TP'
+Idents(breastData) <- newIdent2
+newIdent2 <- unique(newIdent2)
+newIdent2 <- newIdent2[!newIdent2 %in% 'TP']
+FC <- (sapply(newIdent2, function(i){
+  FoldChange(breastData, i, 'TP')[,1]  
+}))
+rownames(FC) <- rownames(breastData)
+write.csv(FC, '../Results/S5_IndividualFC.csv')
+
 ### PCS
 load('../Data/EpithelialCells.RData')
 breastData <- breastData[,Idents(breastData) %in% c('Cancer_TN', 'Healthy_TP')]

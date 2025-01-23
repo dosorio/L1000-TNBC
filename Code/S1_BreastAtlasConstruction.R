@@ -14,10 +14,10 @@ hsaPanglaoDB <- gmtPathways('https://raw.githubusercontent.com/dosorio/utilities
 # ENSEMBLid <- read.csv('../Data/ENSEMBL_GeneAlias.txt', sep = '\t')
 # geneDictionary <- c(ENSEMBLid$Gene.name, ENSEMBLid$Gene.name)
 # names(geneDictionary) <- c(ENSEMBLid$Gene.Synonym, ENSEMBLid$Gene.name)
-# 
+#
 # # FileNames
 # matricesList <- list.files(path = '../Data/UMI/', pattern = '.mtx', full.names = TRUE)
-# 
+#
 # # Collecting data
 # # breastData <- lapply(matricesList, function(fileName){
 # #   X <- readMM(fileName)
@@ -30,7 +30,7 @@ hsaPanglaoDB <- gmtPathways('https://raw.githubusercontent.com/dosorio/utilities
 # #   X <- CreateSeuratObject(X, project = sampleName)
 # #   Idents(X) <- sampleName
 # #   X$orig.ident <- Idents(X)
-# #   return(X)  
+# #   return(X)
 # # })
 # readSample <- function(fileName){
 #   X <- readMM(fileName)
@@ -45,28 +45,28 @@ hsaPanglaoDB <- gmtPathways('https://raw.githubusercontent.com/dosorio/utilities
 #   X$orig.ident <- Idents(X)
 #   return(X)
 # }
-# 
+#
 # # Final Object
 # breastData <- readSample(matricesList[1])
 # for(i in seq_along(matricesList)[-1]){
 #   breastData <- merge(breastData, readSample(matricesList[i]))
 # }
-# 
+#
 # # QC
 # source('https://raw.githubusercontent.com/dosorio/utilities/master/singleCell/scQC.R')
 # breastData <- scQC(breastData)
-# 
+#
 # # Processing
 # breastData <- NormalizeData(breastData)
 # breastData <- FindVariableFeatures(breastData)
 # breastData <- ScaleData(breastData)
 # breastData <- RunPCA(breastData)
 # breastData <- RunHarmony(breastData, group.by.vars = 'orig.ident', max.iter.harmony = 100)
-# 
+#
 # # TSNE
 # # breastData <- RunTSNE(breastData, reduction = 'harmony', dims = 1:20)
 # # TSNEPlot(breastData)
-# 
+#
 # # UMAP
 # breastData <- RunUMAP(breastData, reduction = 'harmony', dims = 1:20)
 # UMAPPlot(breastData)
@@ -92,57 +92,57 @@ breastData <- FindClusters(breastData, resolution = 0.005)
 #   E <- E[order(E$padj),]
 # })
 
-CT1 <- plot_density(breastData, 'EPCAM') + 
-  theme_bw() + 
-  theme(plot.title = element_text(face = 4), 
+CT1 <- plot_density(breastData, 'EPCAM') +
+  theme_bw() +
+  theme(plot.title = element_text(face = 4),
         legend.position = 'None')
 
-CT2 <- plot_density(breastData, 'MKI67') + 
-  theme_bw() + 
-  theme(plot.title = element_text(face = 4), 
+CT2 <- plot_density(breastData, 'MKI67') +
+  theme_bw() +
+  theme(plot.title = element_text(face = 4),
         legend.position = 'None')
 
-CT3 <- plot_density(breastData, 'CD3D') + 
-  theme_bw() + 
-  theme(plot.title = element_text(face = 4), 
+CT3 <- plot_density(breastData, 'CD3D') +
+  theme_bw() +
+  theme(plot.title = element_text(face = 4),
         legend.position = 'None')
 
-CT4 <- plot_density(breastData, 'CD68') + 
-  theme_bw() + 
-  theme(plot.title = element_text(face = 4), 
+CT4 <- plot_density(breastData, 'CD68') +
+  theme_bw() +
+  theme(plot.title = element_text(face = 4),
         legend.position = 'None')
 
-CT5 <- plot_density(breastData,'CD19') + 
-  theme_bw() + 
-  theme(plot.title = element_text(face = 4), 
+CT5 <- plot_density(breastData,'CD19') +
+  theme_bw() +
+  theme(plot.title = element_text(face = 4),
         legend.position = 'None')
 
-CT6 <- plot_density(breastData,'JCHAIN') + 
-  theme_bw() + 
-  theme(plot.title = element_text(face = 4), 
+CT6 <- plot_density(breastData,'JCHAIN') +
+  theme_bw() +
+  theme(plot.title = element_text(face = 4),
         legend.position = 'None')
 
-CT7 <- plot_density(breastData,'PECAM1') + 
-  theme_bw() + 
-  theme(plot.title = element_text(face = 4), 
+CT7 <- plot_density(breastData,'PECAM1') +
+  theme_bw() +
+  theme(plot.title = element_text(face = 4),
         legend.position = 'None')
 
-CT8 <- plot_density(breastData,'PDGFRB') + 
-  theme_bw() + 
-  theme(plot.title = element_text(face = 4), 
+CT8 <- plot_density(breastData,'PDGFRB') +
+  theme_bw() +
+  theme(plot.title = element_text(face = 4),
         legend.position = 'None')
 
-CT9 <- plot_density(breastData, 'ACTA2') + 
-  theme_bw() + 
-  theme(plot.title = element_text(face = 4), 
+CT9 <- plot_density(breastData, 'ACTA2') +
+  theme_bw() +
+  theme(plot.title = element_text(face = 4),
         legend.position = 'None')
 
 png('../Figures/CellTypesMarker.png', width = 2400, height = 2400, res = 300)
-CT1 + CT2 + CT3 + CT4 + CT5 + CT6 + CT7 + CT8 + CT9 
+CT1 + CT2 + CT3 + CT4 + CT5 + CT6 + CT7 + CT8 + CT9
 dev.off()
 
-levels(Idents(breastData)) <- c('T cells', 
-                                'Epithelial cells', 
+levels(Idents(breastData)) <- c('T cells',
+                                'Epithelial cells',
                                 'Mesenchymal cells',
                                 'Myoepithelial cells',
                                 'Myeloid cells',
@@ -150,15 +150,15 @@ levels(Idents(breastData)) <- c('T cells',
                                 'Cycling cells',
                                 'Endothelial cells',
                                 'Myoepithelial cells',
-                                'B cells', 
+                                'B cells',
                                 'Myeloid cells'
 )
 
 # Cell-types plot
-cellTypesPlot <- UMAPPlot(breastData, label = TRUE, repel = TRUE) + 
+cellTypesPlot <- UMAPPlot(breastData, label = TRUE, repel = TRUE) +
   theme_bw() +
-  xlim(-15,15) + 
-  labs(tag = 'A', title = 'Breast', subtitle = expression(italic(n)==77384~Cells)) + 
+  xlim(-15,15) +
+  labs(tag = 'A', title = 'Breast', subtitle = expression(italic(n)==77384~Cells)) +
   theme(legend.position = 'none', plot.title = element_text(face = 2)) +
   xlab('UMAP 1') +
   ylab('UMAP 2')
@@ -174,16 +174,16 @@ diseaseStatus[grepl('TS', diseaseStatus)] <- 'Healthy'
 breastData$diseaseStatus <- diseaseStatus
 
 cancerPlot <- UMAPPlot(breastData[,diseaseStatus == 'Cancer'])
-cancerPlot <- cancerPlot + 
-  labs(title = 'Cancer Samples', subtitle = expression(italic(n)==46594~Cells)) + 
+cancerPlot <- cancerPlot +
+  labs(title = 'Cancer Samples', subtitle = expression(italic(n)==46594~Cells)) +
   theme_bw() +
   theme(legend.position = 'none', plot.title = element_text(face = 2)) +
   xlab('UMAP 1') +
   ylab('UMAP 2')
 
 healthyPlot <- UMAPPlot(breastData[,diseaseStatus == 'Healthy'])
-healthyPlot <- healthyPlot + 
-  labs(tag = 'B', title = 'Healthy Samples', subtitle = expression(italic(n)==30790~Cells)) + 
+healthyPlot <- healthyPlot +
+  labs(tag = 'B', title = 'Healthy Samples', subtitle = expression(italic(n)==30790~Cells)) +
   theme_bw() +
   theme(legend.position = 'none', plot.title = element_text(face = 2)) +
   xlab('UMAP 1') +
@@ -192,17 +192,17 @@ healthyPlot <- healthyPlot +
 # Hormone receptors plot
 densityPlot <- plot_density(breastData, c('ESR1', 'PGR', 'ERBB2'), joint = TRUE, size = 0.05)
 densityPlot <- densityPlot[[4]]
-densityPlot <- densityPlot + 
+densityPlot <- densityPlot +
   theme_bw() +
   labs(subtitle = expression(italic(n)==8938~Cells)) +
-  theme(legend.position = c(1.25,0.55), legend.key.width=unit(0.25,"cm"), legend.background = element_rect(fill = NA)) + 
+  theme(legend.position = c(1.25,0.55), legend.key.width=unit(0.25,"cm"), legend.background = element_rect(fill = NA)) +
   theme(plot.title = element_text(face = 2))
 densityPlot
 
 # MarkersPlot
 Idents(breastData) <- breastData$seurat_clusters
-levels(Idents(breastData)) <- c('T cells', 
-                                'Epithelial cells', 
+levels(Idents(breastData)) <- c('T cells',
+                                'Epithelial cells',
                                 'Mesenchymal cells',
                                 'Myoepithelial cells',
                                 'Myeloid cells',
@@ -210,9 +210,10 @@ levels(Idents(breastData)) <- c('T cells',
                                 'Cycling cells',
                                 'Endothelial cells',
                                 'Myoepithelial cells',
-                                'B cells', 
+                                'B cells',
                                 'Myeloid cells'
 )
+breastData$cellTypes <- Idents(breastData)
 
 markerDE <- pbapply::pblapply(levels(Idents(breastData)), function(X){
   markerDE <- FoldChange(breastData, ident.1 = X)
@@ -220,23 +221,23 @@ markerDE <- pbapply::pblapply(levels(Idents(breastData)), function(X){
 })
 gLabels <- unique(unlist(markerDE))
 
-dotPlot <- DotPlot(breastData, features = gLabels, dot.min = 0.20, scale = TRUE, dot.scale = 5) + 
-  theme_bw() + 
+dotPlot <- DotPlot(breastData, features = gLabels, dot.min = 0.20, scale = TRUE, dot.scale = 5) +
+  theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   xlab('Genes') +
   ylab(NULL) +
   labs(tag = 'C') +
   scale_y_discrete(position = "right") +
   theme(legend.position="bottom", axis.text.x = element_text(face = "italic"))
-  
+
 dotPlot
 
-xFibroblast <- plot_density(breastData, features = c('COL1A1', 'C1R', 
-                                                     'SERPINE1', 'MYL9', 
-                                                     'CFD', 'APOE', 
-                                                     'MFAP5', 'PI16', 
+xFibroblast <- plot_density(breastData, features = c('COL1A1', 'C1R',
+                                                     'SERPINE1', 'MYL9',
+                                                     'CFD', 'APOE',
+                                                     'MFAP5', 'PI16',
                                                      'IGF1', 'MMP2',
-                                                     'ACTA2', 'MYH11', 
+                                                     'ACTA2', 'MYH11',
                                                      'RGS5', 'NOTCH3',
                                                      'TFPI'), joint = TRUE)
 png('Fibroblasts.png', width = 3000, height = 3000, res = 300)
@@ -270,7 +271,7 @@ EEEEEE
 '
 
 png('../Figures/F1.png', width = 4800*.6, height = 4800*.65, res = 300)
-cellTypesPlot + healthyPlot + cancerPlot + densityPlot + dotPlot + 
+cellTypesPlot + healthyPlot + cancerPlot + densityPlot + dotPlot +
   plot_layout(design = pLayout) +  theme(legend.position = "bottom")
 dev.off()
 
@@ -285,11 +286,11 @@ dev.off()
 # DE <- FindMarkers(breastData, ident.1 = 'Cancer_TN', ident.2 = 'Healthy_TP', logfc.threshold = 0)
 # write.csv(DE, '../Data/de_EC_TNBC-H.csv')
 # save(breastData, file = '../Data/EpithelialCells.RData')
-# 
+#
 # # Comparing to healthy negative hormone receptors
 # oDE <- FindMarkers(breastData, ident.1 = 'Cancer_TN', ident.2 = 'Healthy_TN', logfc.threshold = 0)
 # write.csv(oDE, '../Data/de_EC_TNBC-TNH.csv')
-# 
+#
 # # Comparing H vs C
 # Idents(breastData) <- breastData$diseaseStatus
 # oDE <- FindMarkers(breastData, ident.1 = 'Cancer', ident.2 = 'Healthy', logfc.threshold = 0)
@@ -303,5 +304,6 @@ dev.off()
 # write.csv(oDE, '../Data/de_EC_TNBC-allH.csv')
 
 # # table(Idents(breastData))
-# # Cancer_TN  Cancer_TP Healthy_TN Healthy_TP 
-# # 2998       2732       6117       6206 
+# # Cancer_TN  Cancer_TP Healthy_TN Healthy_TP
+# # 2998       2732       6117       6206
+save(breastData, file = 'breastData.RData')
