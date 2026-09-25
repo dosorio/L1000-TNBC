@@ -1,0 +1,12 @@
+   cell n_QL n_GSK n_combo QL_mean QL_sd GSK_mean GSK_sd combo_mean combo_sd
+   BT20    3     4       4    33.4  9.35     36.6   4.12       19.5     5.96
+ CAL120    3     3       3    80.5  9.33     84.6  10.99       64.1     7.00
+ DU4475    3     4       4    40.6 22.58     89.5   2.07       37.3    16.01
+ bliss combo_minus_bliss  ci_lo ci_hi p_vs_QL p_vs_GSK CV_QL CV_combo
+  12.2             7.292   1.61 13.72  0.1040  0.00448  28.0     30.6
+  68.2            -4.094 -17.26  8.07  0.0757  0.06269  11.6     10.9
+  36.3             0.941 -19.84 23.30  0.8397  0.00679  55.6     42.9
+ p_vs_QL_holm p_vs_GSK_holm
+        0.227        0.0134
+        0.227        0.0627
+        0.840        0.0136

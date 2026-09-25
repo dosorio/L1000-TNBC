@@ -1,0 +1,17 @@
+Compounds scored by every method in every subset: 165 
+              mean_rank_correlation min_rank_correlation mean_top10_jaccard
+retriever                     0.843                0.839              0.502
+naive_average                 0.849                0.816              0.558
+PRL                           0.830                0.818              0.545
+metaLINCS                     0.866                0.849              0.624
+              QL_rank_min QL_rank_max
+retriever               1           3
+naive_average           1           1
+PRL                     2          10
+metaLINCS               5          11
+
+QL-XII-47 rank within each full subset ranking:
+                retriever naive_average PRL metaLINCS
+BT20+HS578T             3             1  10        11
+BT20+MDAMB231           1             1   2         5
+HS578T+MDAMB231         1             1   5        11

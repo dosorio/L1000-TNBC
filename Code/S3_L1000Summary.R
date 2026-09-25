@@ -32,11 +32,13 @@ table(S1$concentration)
 
 # 4899 profiles 205 compounds, 4 concentrations, 2 time points in 3 cell TNBC cell lines
 S1 <- apply(S1, 1, function(X){paste0(X, collapse = '_')})
+# Exact matching of compound, cell line and concentration (substring matching merged, e.g., EGF with HBEGF)
+S1Keys <- paste(l1000_compounds, l1000_cellLine, l1000_concentration, sep = '_')
 
 iaProfiles <- 0
 
 S1Profiles <- pbsapply(S1, function(N){
-  X <- l1000_es[,l1000_names[grepl(N, l1000_names)], drop = FALSE]
+  X <- l1000_es[,l1000_names[S1Keys == N], drop = FALSE]
   if(ncol(X)>1){
     X <- preprocessCore::normalize.quantiles(as.matrix(X))
   }
@@ -63,7 +65,7 @@ S2 <- apply(S2, 1, function(X){paste0(X, collapse = '_')})
 
 iaProfiles <- 0
 S2Profiles <- pbsapply(S2, function(N){
-  X <- S1Profiles[,grepl(N, S1_names, fixed = TRUE), drop = FALSE]
+  X <- S1Profiles[,sub('_[^_]+$', '', S1_names) == N, drop = FALSE]
   if(ncol(X)>1){
     X <- preprocessCore::normalize.quantiles(as.matrix(X))
   }
@@ -85,9 +87,9 @@ rownames(S2Profiles) <- rownames(l1000_es)
 write.csv(S2Profiles, '../Results/S1_CellLinesProfiles.csv')
 
 
-S3 <- unique(unlist(lapply(strsplit(S2_names, '_'), function(X){X[1]})))
+S3 <- unique(sub('_[^_]+$', '', S2_names))
 S3Profiles <- pbsapply(S3, function(N){
-  X <- S2Profiles[,grepl(N, S2_names, fixed = TRUE), drop = FALSE]
+  X <- S2Profiles[,sub('_[^_]+$', '', S2_names) == N, drop = FALSE]
   if(ncol(X)>1){
     X <- preprocessCore::normalize.quantiles(as.matrix(X))
   }
@@ -124,8 +126,10 @@ A1 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.6, point.padding = 0.2, force = 5, max.overlaps = Inf, seed = 42) +
   labs(tag = 'A', title = parse(text = 'QL-XII-47 - MDAMB231 - 0.08~mu*M'), subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab('24 h') +
   ylab('6 h') +
@@ -136,8 +140,10 @@ A2 <- ggplot(T1, aes(Avg,X6h, label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(data = function(d){ d$G[-(1:6)] <- NA; d }, fontface=3, size=2.6, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.4, force = 4, max.overlaps = Inf, seed = 42) +
   labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~0.08~mu*M~Samples-MDAMB231)')) +
   ylab('6 h') +
@@ -148,8 +154,10 @@ A3 <- ggplot(T1, aes(Avg,X24h , label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(data = function(d){ d$G[-(1:6)] <- NA; d }, fontface=3, size=2.6, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.4, force = 4, max.overlaps = Inf, seed = 42) +
   labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~0.08~mu*M~Samples-MDAMB231)')) +
   ylab('24 h') +
@@ -170,8 +178,10 @@ A4 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.6, point.padding = 0.2, force = 5, max.overlaps = Inf, seed = 42) +
   labs(title = parse(text = 'QL-XII-47 - MDAMB231 - 0.4~mu*M'), subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab('24 h') +
   ylab('6 h') +
@@ -182,8 +192,10 @@ A5 <- ggplot(T1, aes(Avg,X6h, label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(data = function(d){ d$G[-(1:6)] <- NA; d }, fontface=3, size=2.6, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.4, force = 4, max.overlaps = Inf, seed = 42) +
   labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~0.4~mu*M~Samples-MDAMB231)')) +
   ylab('6 h') +
@@ -194,8 +206,10 @@ A6 <- ggplot(T1, aes(Avg,X24h , label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(data = function(d){ d$G[-(1:6)] <- NA; d }, fontface=3, size=2.6, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.4, force = 4, max.overlaps = Inf, seed = 42) +
   labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~0.4~mu*M~Samples-MDAMB231)')) +
   ylab('24 h') +
@@ -218,8 +232,10 @@ A7 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.6, point.padding = 0.2, force = 5, max.overlaps = Inf, seed = 42) +
   labs(title = parse(text = 'QL-XII-47 - MDAMB231 - 2~mu*M'), subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab('24 h') +
   ylab('6 h') +
@@ -230,8 +246,10 @@ A8 <- ggplot(T1, aes(Avg,X6h, label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(data = function(d){ d$G[-(1:6)] <- NA; d }, fontface=3, size=2.6, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.4, force = 4, max.overlaps = Inf, seed = 42) +
   labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~2~mu*M~Samples-MDAMB231)')) +
   ylab('6 h') +
@@ -242,8 +260,10 @@ A9 <- ggplot(T1, aes(Avg,X24h , label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(data = function(d){ d$G[-(1:6)] <- NA; d }, fontface=3, size=2.6, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.4, force = 4, max.overlaps = Inf, seed = 42) +
   labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~2~mu*M~Samples-MDAMB231)')) +
   ylab('24 h') +
@@ -264,8 +284,10 @@ A10 <- ggplot(T1, aes(X24h,X6h, label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.6, point.padding = 0.2, force = 5, max.overlaps = Inf, seed = 42) +
   labs(title = parse(text = 'QL-XII-47 - MDAMB231 - 10~mu*M'), subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab('24 h') +
   ylab('6 h') +
@@ -276,8 +298,10 @@ A11 <- ggplot(T1, aes(Avg,X6h, label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(data = function(d){ d$G[-(1:6)] <- NA; d }, fontface=3, size=2.6, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.4, force = 4, max.overlaps = Inf, seed = 42) +
   labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~10~mu*M~Samples-MDAMB231)')) +
   ylab('6 h') +
@@ -288,8 +312,10 @@ A12 <- ggplot(T1, aes(Avg,X24h , label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, size=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(data = function(d){ d$G[-(1:6)] <- NA; d }, fontface=3, size=2.6, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.4, force = 4, max.overlaps = Inf, seed = 42) +
   labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~10~mu*M~Samples-MDAMB231)')) +
   ylab('24 h') +
@@ -317,8 +343,10 @@ B1 <- ggplot(T2, aes(Avg, X0.08um, label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.6, point.padding = 0.2, force = 5, max.overlaps = Inf, seed = 42) +
   labs(tag = 'B',subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples-MDAMB231)')) +
   ylab(expression(atop('Average',('QL-XII-47'~0.08~mu*'M'~'Samples-MDAMB231'))))+
@@ -329,8 +357,10 @@ B2 <- ggplot(T2, aes(Avg, X0.4um, label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.6, point.padding = 0.2, force = 5, max.overlaps = Inf, seed = 42) +
   labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples-MDAMB231)')) +
   ylab(expression(atop('Average',('QL-XII-47'~0.4~mu*'M'~'Samples-MDAMB231'))))+
@@ -341,8 +371,10 @@ B3 <- ggplot(T2, aes(Avg, X2um, label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.6, point.padding = 0.2, force = 5, max.overlaps = Inf, seed = 42) +
   labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples- MDAMB231)')) +
   ylab(expression(atop('Average',('QL-XII-47'~2~mu*'M'~'Samples-MDAMB231'))))+
@@ -353,8 +385,10 @@ B4 <- ggplot(T2, aes(Avg, X10um, label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.6, point.padding = 0.2, force = 5, max.overlaps = Inf, seed = 42) +
   labs(subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples-MDAMB231)')) +
   ylab(expression(atop('Average',('QL-XII-47'~10~mu*'M'~'Samples-MDAMB231'))))+
@@ -380,8 +414,10 @@ C1 <- ggplot(T3, aes(Avg, BT20, label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.6, point.padding = 0.2, force = 5, max.overlaps = Inf, seed = 42) +
   labs(tag = 'C', title = 'QL-XII-47 - BT20', subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples~Across~Cell~Lines)')) +
   ylab(parse(text = 'Average~(QL-XII-47 - BT20)')) +
@@ -392,8 +428,10 @@ C2 <- ggplot(T3, aes(Avg, HS578T, label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.6, point.padding = 0.2, force = 5, max.overlaps = Inf, seed = 42) +
   labs(title = 'QL-XII-47 - HS578T', subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples~Across~Cell~Lines)')) +
   ylab(parse(text = 'Average~(QL-XII-47 - HS578T)')) +
@@ -404,8 +442,10 @@ C3 <- ggplot(T3, aes(Avg, MDAMB231, label = G)) +
   geom_point(alpha = 0.3, pch = 16) +
   geom_density2d() +
   theme_bw() +
+  scale_x_continuous(expand = expansion(mult = 0.12)) +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
   geom_abline(intercept = 0, slope = ifelse(corValue > 0, 1,-1), lty = 2, col = 'red') +
-  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1) +
+  geom_text_repel(fontface=3, min.segment.length = 0, bg.color = 'white', bg.r = 0.1, box.padding = 0.6, point.padding = 0.2, force = 5, max.overlaps = Inf, seed = 42) +
   labs(title = 'QL-XII-47 - MDAMB231', subtitle = parse(text = paste0('widehat(rho) == ', round(corValue,3)))) +
   xlab(parse(text = 'Average~(QL-XII-47~Samples~Across~Cell~Lines)')) +
   ylab(parse(text = 'Average~(QL-XII-47 - MDAMB231)')) +

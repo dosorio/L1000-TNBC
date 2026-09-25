@@ -1,0 +1,30 @@
+== GSE92742 (LINCS Phase I)
+Perturbagens by type:
+
+      ctl_untrt   ctl_untrt.cns      ctl_vector  ctl_vector.cns     ctl_vehicle 
+              1               1              61               8               3 
+ctl_vehicle.cns          trt_cp         trt_lig          trt_oe      trt_oe.mut 
+              2           20413             622            3492             135 
+         trt_sh      trt_sh.cgs      trt_sh.css 
+          18493            4345            3807 
+Signatures: 473647 
+Cell lines with signatures: 76 
+Compounds with signatures: 20413 
+Compounds profiled in 1 cell line: 4473 | in >= 10 cell lines: 2834 
+Compound signature time points:
+
+ 144 h   24 h   48 h    6 h 
+     1 109721     58  95254 
+Compounds with both 6 h and 24 h signatures: 16443 
+Compounds with more than one dose: 2142 (10.5%) 
+
+== ccdata l1000_es (all cell lines)
+Genes: 1001 | signatures: 230829 
+Cell lines: 74 
+
+== ccdata, TNBC cell lines
+Signatures: 4899 | perturbagens: 205 
+Perturbagens profiled in all three lines: 205 
+Small molecules: 176 | ligands: 29 
+Small-molecule concentrations: 0.08um 0.4um 10um 2um | times: 24h 6h 
+Ligand concentrations: 0.1ng.ul 100ng.ul 10ng.ul 1ng.ul 300ng.ul 3ng.ul | times: 1h 24h 3h 6h 

@@ -14,8 +14,10 @@ iGenes <- intersect(rownames(expressionProfile), rownames(drugProfiles))
 expressionProfile <- expressionProfile[iGenes, ]
 drugProfiles <- drugProfiles[iGenes, ]
 
-dPotential <- lapply(colnames(expressionProfile), function(sampleID){
-  drugPotential <- t(pbsapply(seq_len(ncol(drugProfiles)), function(X){
+# Samples are processed in parallel (forked workers); results are identical to a serial run
+nCores <- max(1, parallel::detectCores() - 2)
+dPotential <- parallel::mclapply(colnames(expressionProfile), mc.cores = nCores, function(sampleID){
+  drugPotential <- t(sapply(seq_len(ncol(drugProfiles)), function(X){
     df <- data.frame(A = expressionProfile[,sampleID], B = drugProfiles[,X])
     cValue <- statsExpressions::corr_test(df,A,B, type = 'nonparametric')
     c(drugPotential = cValue$estimate, lowCI = cValue$conf.low, highCI = cValue$conf.high, P= cValue$p.value)
@@ -34,7 +36,7 @@ write.csv(dPotential, '../Results/S5_drugPotential.csv')
 
 nameCombinations <- t(combn(colnames(drugProfiles),2))
 
-combPotential <- pblapply(colnames(expressionProfile), function(sampleID){
+combPotential <- parallel::mclapply(colnames(expressionProfile), mc.cores = nCores, function(sampleID){
   combinationPotential <- t(apply(nameCombinations,1,function(X){
     df <- data.frame(A = expressionProfile[,sampleID], B = rowMeans(drugProfiles[,X]))
     cValue <- statsExpressions::corr_test(df,A,B, type = 'nonparametric')

@@ -1,0 +1,90 @@
+Shared genes: 610 
+GO BP terms with FDR < 0.05 per input:
+
+        TNBC signature              QL-XII-47             GSK-690693 
+                     0                     15                      0 
+QL-XII-47 + GSK-690693 
+                    16 
+Combination terms: 16 | opposite sign to TNBC signature: 15 | minimum TNBC-signature FDR among them: 0.149 
+
+Leading edge of combination GO BP terms:
+Regulation Of miRNA Transcription (GO:1902893) | NES 2.11 | FDR 0.00446 | EGFR,MYC,NR3C1,FOXO3,EGR1,GATA3,SMAD3,FOSL1,JUN,HIF1A
+Positive Regulation Of miRNA Metabolic Process (GO:2000630) | NES 2.09 | FDR 0.00552 | EGFR,MYC,NR3C1,FOXO3,EGR1,GATA3,SMAD3,FOSL1,JUN,HIF1A
+Positive Regulation Of miRNA Transcription (GO:1902895) | NES 2.09 | FDR 0.00552 | EGFR,MYC,NR3C1,FOXO3,EGR1,GATA3,SMAD3,FOSL1,JUN,HIF1A
+Regulation Of Transcription By RNA Polymerase II (GO:0006357) | NES 1.93 | FDR 0.00413 | EGFR,MYC,NR3C1,NCOA3,ZFP36,GADD45A,FOXO3,EGR1,KDM3A,ARID4B,CEBPD,SOX4,GATA3,FOXJ3,DRAP1
+Negative Regulation Of DNA-templated Transcription (GO:0045892) | NES 1.91 | FDR 0.00552 | MYC,NR3C1,ZFP36,GADD45A,FOXO3,ARID4B,KAT6A,SOX4,GATA3,KAT6B,DRAP1,FHL2,SMAD3,ARID5B,RBM15B
+Negative Regulation Of Cell Population Proliferation (GO:0008285) | NES 1.90 | FDR 0.03 | MYC,HMOX1,DNAJB2,CDKN1A,SOX4,GATA3,SMAD3,CHERP,TFAP2A,APP,CDKN1B,PTPRK,ATF5,HSPA1B,HSPA1A
+Positive Regulation Of Transcription By RNA Polymerase II (GO:0045944) | NES 1.89 | FDR 0.0121 | EGFR,MYC,NR3C1,NCOA3,FOXO3,EGR1,SOX4,GATA3,FOXJ3,RELB,SMAD3,EAPP,IKBKB,JUN,TFAP2A
+Positive Regulation Of Kinase Activity (GO:0033674) | NES 1.89 | FDR 0.0374 | EGFR,IGF1R,ERBB3,CDKN1A
+Negative Regulation Of Transcription By RNA Polymerase II (GO:0000122) | NES 1.84 | FDR 0.0129 | MYC,NR3C1,ZFP36,GADD45A,FOXO3,ARID4B,ZNF451,SOX4,GATA3,DRAP1,FHL2,SMAD3,ARID5B,JUN,ZNF131
+Regulation Of Cell Population Proliferation (GO:0042127) | NES 1.80 | FDR 0.0183 | EGFR,MYC,IGF1R,DNAJB2,ERBB3,CDKN1A,BIRC2,SOX4,GATA3,SMAD3,EAPP,FOSL1,JUN,CHERP,TFAP2A
+Positive Regulation Of DNA-templated Transcription (GO:0045893) | NES 1.75 | FDR 0.0218 | EGFR,MYC,NR3C1,NCOA3,KDM5A,FOXO3,EGR1,KDM3A,KAT6A,SOX4,GATA3,KAT6B,FOXJ3,RELB,SMAD3
+Positive Regulation Of Nucleic Acid-Templated Transcription (GO:1903508) | NES 1.75 | FDR 0.0457 | EGFR,MYC,KDM5A,FOXO3,EGR1,KDM3A,KAT6A,SOX4,GATA3,KAT6B,SMAD3,IKBKB,JUN,TFAP2A,HIF1A
+Negative Regulation Of Cellular Process (GO:0048523) | NES 1.71 | FDR 0.0497 | MYC,DNAJB2,ERBB3,CDKN1A,SOX4,GATA3,SMAD3,CHMP4A,CCDC85B,CHERP,TFAP2A,APP,CDKN1B,PTPRK,ATF5
+Regulation Of DNA-templated Transcription (GO:0006355) | NES 1.70 | FDR 0.0286 | EGFR,MYC,NR3C1,KDM5A,FOXO3,EGR1,KDM3A,ARID4B,KAT6A,CEBPD,TERF2IP,SOX4,GATA3,KAT6B,FOXJ3
+Regulation Of Apoptotic Process (GO:0042981) | NES 1.69 | FDR 0.0343 | EGFR,MYC,GADD45B,IGF1R,GADD45A,FOXO3,DUSP6,EGR1,ERBB3,BIRC2,SOX4,FHL2,DDX42,CASP3,JUN
+Regulation Of Gene Expression (GO:0010468) | NES 1.66 | FDR 0.0457 | MYC,NR3C1,TIPARP,EGR1,KAT6A,TERF2IP,SOX4,GATA3,KAT6B,SMAD3,MBNL2,ZNF131,TFAP2A,APP,HIF1A
+
+Hallmarks, TNBC signature, ordered by FDR:
+                       pathway TNBC signature NES TNBC signature FDR
+ TNF-alpha Signaling via NF-kB               -2.4            2.1e-07
+                     Apoptosis               -1.9            7.2e-03
+                   E2F Targets                1.8            3.1e-02
+         Inflammatory Response               -1.7            3.1e-02
+          IL-2/STAT5 Signaling               -1.6            1.2e-01
+                    Complement                1.5            1.6e-01
+       Estrogen Response Early               -1.5            1.6e-01
+                    DNA Repair                1.5            1.9e-01
+ QL-XII-47 + GSK-690693 NES QL-XII-47 + GSK-690693 FDR
+                        2.3                    1.2e-05
+                        1.9                    1.7e-02
+                       -1.2                    4.1e-01
+                        1.2                    4.1e-01
+                        1.7                    4.5e-02
+                        1.0                    5.7e-01
+                        1.3                    3.4e-01
+                       -1.0                    5.7e-01
+
+Hallmarks significant for the combination:
+                       pathway TNBC signature NES TNBC signature FDR
+                     Apoptosis               -1.9            7.2e-03
+         Fatty Acid Metabolism                1.2            3.7e-01
+          IL-2/STAT5 Signaling               -1.6            1.2e-01
+ TNF-alpha Signaling via NF-kB               -2.4            2.1e-07
+                UV Response Dn               -1.4            2.4e-01
+ QL-XII-47 + GSK-690693 NES QL-XII-47 + GSK-690693 FDR
+                        1.9                    1.7e-02
+                       -2.0                    6.1e-03
+                        1.7                    4.5e-02
+                        2.3                    1.2e-05
+                        1.8                    2.4e-02
+
+Combination Hallmarks on all 1001 LINCS genes (FDR < 0.05, as in Fig. 5E):
+                       pathway       NES         padj
+         Fatty Acid Metabolism -1.988363 6.503435e-03
+              mTORC1 Signaling -1.893933 7.342614e-03
+                   E2F Targets -1.726563 1.901168e-02
+                     Apoptosis  1.652660 2.289560e-02
+                UV Response Dn  1.721402 4.549558e-02
+                    Myogenesis  1.897141 1.790633e-02
+ TNF-alpha Signaling via NF-kB  2.461874 5.396375e-07
+
+Genes discussed in the response:
+        TNBC_log2FC TNBC_FDR   QL   GSK combination
+GADD45B       -1.56 2.8e-240 1.99  0.77        1.38
+GADD45A       -0.86 2.1e-101 2.44 -0.48        0.98
+HMOX1         -1.81  6.1e-93 2.59  0.32        1.46
+CEBPD         -1.96  0.0e+00 0.68  0.73        0.71
+CDKN1A        -0.19  6.2e-97 1.67  0.04        0.85
+CDKN1B        -0.02  6.7e-15 0.27  0.54        0.41
+FOXO3         -0.33  8.6e-71 1.45  0.42        0.94
+ERBB3         -0.40  1.3e-66 0.29  1.50        0.90
+IGF1R         -0.25  9.0e-44 0.98  1.16        1.07
+EGFR           0.16  1.0e+00 1.92  1.06        1.49
+MYC            0.01  1.0e+00 3.08 -0.13        1.48
+JUN           -0.11  1.5e-89 1.23 -0.35        0.44
+EGR1           0.10  1.0e+00 1.56  0.28        0.92
+FOSL1         -0.64 2.0e-130 1.87 -0.86        0.50
+NR3C1         -0.20  5.5e-42 1.49  1.08        1.29
+HIF1A         -0.23  1.3e-57 0.94 -0.11        0.41
+SMAD3         -0.30  1.2e-93 0.77  0.36        0.57

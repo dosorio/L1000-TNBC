@@ -12,13 +12,13 @@ dPotentialMatrix <- dcast(dPotential, compound ~ sampleID, value.var = 'drugPote
 rownames(dPotentialMatrix) <- dPotentialMatrix$compound
 dPotentialMatrix <- dPotentialMatrix[,-1]
 dPotentialMatrix <- dPotentialMatrix[names(topSingle),]
-topSingleLabels <- gsub('\\.', '-', paste0(toupper(names(topSingle)), ' (', topSingle, '/', sum(topSingle), ')'))
+topSingleLabels <- gsub('_LIG', '', gsub('\\.', '-', paste0(toupper(names(topSingle)), ' (', topSingle, '/', sum(topSingle), ')')))  # ligands shown without the '_lig' suffix
 sampleID <- unique(dPotential$sampleID)
 sampleID <- paste0(sampleID, ifelse(sampleID %in% unique(dPotential$sampleID[dPotential$FDR < 0.05]), '*', ''))
 sampleID <- gsub('_Cancer_TN', '', sampleID)
 dPotentialMatrix <- as.matrix(dPotentialMatrix)
 
-png('../Figures/S5_dPotential.png', width = 2500, height = 750, res = 300)
+png('../Figures/S5_dPotential.png', width = 2500, height = 1000, res = 300)
 HM1 <- Heatmap(dPotentialMatrix, name = 'Drug Potential', 
         row_labels = topSingleLabels, 
         column_labels = sampleID, cluster_rows = FALSE, show_column_dend = FALSE)
@@ -33,15 +33,16 @@ cPotentialMatrix <- dcast(cPotential, combination ~ sampleID, value.var = 'combi
 rownames(cPotentialMatrix) <- cPotentialMatrix$combination
 cPotentialMatrix <- cPotentialMatrix[,-1]
 cPotentialMatrix <- cPotentialMatrix[names(topCombination),]
-topCombinationLabels <- gsub('\\.', '-', paste0(toupper(names(topCombination)), ' (', topCombination, '/', sum(topCombination), ')'))
+topCombinationLabels <- gsub('_LIG', '', gsub('\\.', '-', paste0(toupper(names(topCombination)), ' (', topCombination, '/', sum(topCombination), ')')))
 sampleID <- unique(cPotential$sampleID)
 sampleID <- paste0(sampleID, ifelse(sampleID %in% unique(cPotential$sampleID[cPotential$FDR < 0.05]), '*', ''))
 sampleID <- gsub('_Cancer_TN', '', sampleID)
 cPotentialMatrix <- as.matrix(cPotentialMatrix)
 
-png('../Figures/S5_cPotential.png', width = 2500, height = 1000, res = 300)
+png('../Figures/S5_cPotential.png', width = 2500, height = 1400, res = 300)
 HM2 <- Heatmap(cPotentialMatrix, name = 'Combination Potential', 
-               row_labels = topCombinationLabels)
+               row_labels = topCombinationLabels, column_labels = sampleID,
+               row_names_gp = gpar(fontsize = 9), column_names_gp = gpar(fontsize = 9))
 draw(HM2, heatmap_legend_side = "right")
 dev.off()
 
@@ -52,7 +53,7 @@ rowSplit <- factor(c(rep('Compound', length(topSingleLabels)), rep('Combination'
 fontType <- rep(1, length(rowSplit))
 fontType[1] <- 2
 fontType[length(topSingleLabels)+1] <- 2
-png('../Figures/F5.png', width = 3000, height = 850, res = 300)
+png('../Figures/F5.png', width = 3000, height = 1500, res = 300)
 HM3 <- Heatmap(rbind(dPotentialMatrix, cPotentialMatrix), 
                name = 'Potential',
                col = col_fun,

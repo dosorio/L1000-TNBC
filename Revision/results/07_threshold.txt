@@ -1,0 +1,12 @@
+ threshold compounds combinations top_compound QL_XII_47_rank
+       0.4       205        20910    QL-XII-47              1
+       0.5       200        19900    QL-XII-47              1
+       0.6       151        11325    QL-XII-47              1
+       0.7        81         3240      torin-2              2
+       0.8         6           15      torin-2             NA
+ GSK_690693_present        top_combination QL_GSK_rank
+               TRUE      IL1_lig + torin-2           3
+               TRUE      IL1_lig + torin-2           3
+               TRUE GSK-690693 + QL-XII-47           1
+              FALSE    QL-XII-47 + torin-2          NA
+              FALSE     AZD-8055 + torin-2          NA

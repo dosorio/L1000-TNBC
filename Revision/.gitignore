@@ -1,0 +1,4 @@
+public/
+metaLINCS/
+results/*.rds
+results/*.log

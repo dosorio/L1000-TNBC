@@ -1,0 +1,5 @@
+"drug_id","drug","group","n","median_AUC","wilcox_p","test_conc_uM","TNBC_lines_IC50_below_test_conc"
+235,"QL-XII-47","TNBC",23,0.77173,0.154630119196875,0.6,0
+235,"QL-XII-47","non-TNBC breast",23,0.669313,0.154630119196875,0.6,0
+326,"GSK690693","TNBC",23,0.891838,0.337966266767039,0.8,1
+326,"GSK690693","non-TNBC breast",22,0.8733865,0.337966266767039,0.8,1

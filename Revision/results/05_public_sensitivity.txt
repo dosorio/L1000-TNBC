@@ -1,0 +1,63 @@
+== GDSC1 drug entries
+  DRUG_ID DRUG_NAME  PUTATIVE_TARGET MAX_CONC
+1     235 QL-XII-47         BTK, BMX    10.24
+2     326 GSK690693 AKT1, AKT2, AKT3    10.24
+3    1155 QL-XII-47            IRAK1    10.00
+
+== GDSC1 DRUG_ID 235 QL-XII-47 
+                  n median_AUC median_IC50_uM
+non-TNBC breast  23      0.669           2.00
+TNBC (ER-/HER2-) 23      0.772           3.71
+Wilcoxon AUC, TNBC vs non-TNBC breast: P = 0.155 
+TNBC lines with IC50 below 0.6 uM: 0 of 23 () 
+     cell      AUC    IC50_uM   Z_SCORE
+     BT20 0.533725  0.8032904 -0.918602
+   CAL120 0.810553  7.3633942  0.390473
+   DU4475 0.592634  1.1088806 -0.728116
+  HCC1806 0.837092  6.1854886  0.287479
+    HCC70 0.756508  3.7070114 -0.015028
+   HS578T 0.898695 15.2170422  0.819372
+ MDAMB231 0.716474  2.7843738 -0.184132
+
+== GDSC1 DRUG_ID 326 GSK690693 
+                  n median_AUC median_IC50_uM
+non-TNBC breast  22      0.873           14.7
+TNBC (ER-/HER2-) 23      0.892           21.8
+Wilcoxon AUC, TNBC vs non-TNBC breast: P = 0.338 
+TNBC lines with IC50 below 0.8 uM: 1 of 23 (CAL148) 
+     cell      AUC    IC50_uM   Z_SCORE
+     BT20 0.823586   7.442665 -0.877569
+   CAL120 0.959135  85.537853  0.510231
+   DU4475 0.975910  40.207920  0.081173
+  HCC1806 0.968365  40.034757  0.078720
+    HCC70 0.854555   8.903736 -0.775694
+   HS578T 0.985685 161.647170  0.871972
+ MDAMB231 0.984507 159.756695  0.865286
+
+== HMS LINCS 20344 (Breast Cancer Profiling)
+Lines excluded (no subtype annotation): MDAMB134, PDX1258, PDX1328, PDXHCI002, SUM1315, SUM149, SUM159 
+
+ Ipatasertib/GDC0068 
+                  n median_GRmax median_GR_AOC
+non-TNBC breast   9        0.251         0.214
+non-tumorigenic   2        0.641         0.048
+TNBC (ER-/HER2-) 17        0.496         0.166
+   cell   GRmax  GR_AOC
+ MCF10A 0.64724 0.05999
+   HME1 0.63530 0.03647
+
+ Torin2 
+                  n median_GRmax median_GR_AOC
+non-TNBC breast   9       -0.328         0.603
+non-tumorigenic   2        0.102         0.342
+TNBC (ER-/HER2-) 17       -0.152         0.456
+   cell    GRmax  GR_AOC
+ MCF10A 0.127480 0.33678
+   HME1 0.076352 0.34682
+
+== HMS LINCS 20367 (QL-XII-47 and Torin2 in HCC70 and HCC1806, mean of replicates)
+  Cell line Name Drug name Name      GRmax      GR50    GR_AOC
+1        HCC1806      QL-XII-47 -0.6323333 0.9743333 0.3393333
+2          HCC70      QL-XII-47 -0.7683333 0.7216667 0.4213333
+3        HCC1806         Torin2 -0.4870000 0.0674000 0.6803333
+4          HCC70         Torin2 -0.9470000 0.0148000 1.0700000

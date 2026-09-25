@@ -1,0 +1,12 @@
+Published retriever profiles: 152 | exact-matching profiles: 151 
+Only in published: EGF TNF | only in exact: TNF_lig 
+Shared profiles identical (max abs difference < 1e-12): 150 of 150 
+Published TNF equals exact TNF_lig: TRUE 
+Step-1 profiles matched by grepl("EGF_lig_BT20"): EGF_lig_BT20_100ng.ul HBEGF_lig_BT20_100ng.ul 
+Step-1 profiles matched by grepl("EGF_lig_HS578T"): EGF_lig_HS578T_100ng.ul HBEGF_lig_HS578T_100ng.ul 
+Published rank of EGF (single agent): 15 of 152 
+Published top combinations:
+                       combinationPotential
+GSK.690693 + QL.XII.47           -0.3292419
+QL.XII.47 + torin.2              -0.3274212
+EGF + torin.2                    -0.3232392
